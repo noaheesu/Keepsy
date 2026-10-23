@@ -40,6 +40,19 @@ struct LocationList: View {
                                 }
                                 Button("Rename") { startNaming(child) }
                             }
+                            .contextMenu {
+                                Button("Rename", systemImage: "pencil") { startNaming(child) }
+                                Toggle("Freezer", systemImage: "snowflake", isOn: Binding {
+                                    child.isFreezer
+                                } set: {
+                                    child.isFreezer = $0
+                                    try? context.save()
+                                })
+                                Button("Delete", systemImage: "trash", role: .destructive) {
+                                    child.deleteMovingContents()
+                                    try? context.save()
+                                }
+                            }
                     }
                     .onMove(perform: move)
                 }
@@ -113,7 +126,7 @@ private struct LocationRow: View {
         let batches = location.allBatches
         let soonest = batches.compactMap(\.expiresAt).min()
         HStack(spacing: 12) {
-            Image(systemName: location.children?.count ?? 0 > 0 ? "square.stack.3d.up" : "shippingbox")
+            Image(systemName: location.isFreezer ? "snowflake" : location.children?.count ?? 0 > 0 ? "square.stack.3d.up" : "shippingbox")
                 .font(.title3)
                 .foregroundStyle(Color.accentColor)
                 .frame(width: 32)

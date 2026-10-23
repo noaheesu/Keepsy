@@ -130,6 +130,16 @@
         }
       }
     },
+    "Add Count": {
+      "localizations": {
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "개수 추가"
+          }
+        }
+      }
+    },
     "Add Item": {
       "localizations": {
         "ko": {
@@ -200,12 +210,32 @@
         }
       }
     },
+    "Buy again?": {
+      "localizations": {
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "다시 살까요?"
+          }
+        }
+      }
+    },
     "Cancel": {
       "localizations": {
         "ko": {
           "stringUnit": {
             "state": "translated",
             "value": "취소"
+          }
+        }
+      }
+    },
+    "Check date": {
+      "localizations": {
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "날짜 확인"
           }
         }
       }
@@ -280,6 +310,34 @@
         }
       }
     },
+    "Every %lld days": {
+      "localizations": {
+        "en": {
+          "variations": {
+            "plural": {
+              "one": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "Every day"
+                }
+              },
+              "other": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "Every %lld days"
+                }
+              }
+            }
+          }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "보통 %lld일마다"
+          }
+        }
+      }
+    },
     "Expiration": {
       "localizations": {
         "ko": {
@@ -340,6 +398,26 @@
         }
       }
     },
+    "Freeze": {
+      "localizations": {
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "냉동하기"
+          }
+        }
+      }
+    },
+    "Freeze in %@": {
+      "localizations": {
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@에 냉동하기"
+          }
+        }
+      }
+    },
     "Freezer": {
       "localizations": {
         "ko": {
@@ -356,6 +434,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "냉장"
+          }
+        }
+      }
+    },
+    "Frozen": {
+      "localizations": {
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "냉동됨"
           }
         }
       }
@@ -593,12 +681,12 @@
         }
       }
     },
-    "Ran out or past date. Buy again?": {
+    "Ran out": {
       "localizations": {
         "ko": {
           "stringUnit": {
             "state": "translated",
-            "value": "다 썼거나 기한이 지났어요. 다시 살까요?"
+            "value": "다 떨어졌어요"
           }
         }
       }
@@ -693,6 +781,16 @@
         }
       }
     },
+    "Threw Away": {
+      "localizations": {
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "버렸어요"
+          }
+        }
+      }
+    },
     "Time": {
       "localizations": {
         "ko": {
@@ -713,12 +811,12 @@
         }
       }
     },
-    "Type what you need above. Things you mark as used show up here as suggestions.": {
+    "Type what you need above. Things that run out, or that you usually buy around now, show up here.": {
       "localizations": {
         "ko": {
           "stringUnit": {
             "state": "translated",
-            "value": "필요한 걸 위에 입력하세요. 다 쓴 물건은 여기에 추천으로 나와요."
+            "value": "필요한 걸 위에 입력하세요. 다 떨어졌거나 평소 살 때가 된 물건은 여기에 나와요."
           }
         }
       }

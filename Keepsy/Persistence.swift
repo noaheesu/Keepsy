@@ -59,7 +59,7 @@ struct Persistence {
         guard (try? context.count(for: Location.fetchRequest())) == 0 else { return }
         let kitchen = Location.make(String(localized: "Kitchen"), parent: nil, in: context)
         Location.make(String(localized: "Fridge"), parent: kitchen, in: context)
-        Location.make(String(localized: "Freezer"), parent: kitchen, in: context)
+        Location.make(String(localized: "Freezer"), parent: kitchen, in: context).isFreezer = true
         try? context.save()
     }
 }

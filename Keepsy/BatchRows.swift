@@ -27,6 +27,8 @@ struct BatchRows: View {
     let batches: [Batch]
     @Binding var target: EditorTarget?
     @Environment(\.managedObjectContext) private var context
+    @FetchRequest(sortDescriptors: [SortDescriptor(\Location.sortOrder)], predicate: NSPredicate(format: "isFreezer == YES"))
+    private var freezers: FetchedResults<Location>
 
     var body: some View {
         ForEach(batches) { batch in
@@ -43,12 +45,53 @@ struct BatchRows: View {
                 }
                 .tint(.fresh)
             }
+            .contextMenu {
+                Picker("Remaining", systemImage: "gauge.with.dots.needle.50percent", selection: levelBinding(batch)) {
+                    ForEach(Level.allCases.reversed()) { level in
+                        Text(level.title).tag(level)
+                    }
+                }
+                .pickerStyle(.menu)
+                if batch.location?.isFreezer != true {
+                    ForEach(freezers) { freezer in
+                        Button {
+                            withAnimation {
+                                batch.freeze(into: freezer)
+                                try? context.save()
+                            }
+                        } label: {
+                            Label(freezers.count > 1 ? "Freeze in \(freezer.path)" : "Freeze", systemImage: "snowflake")
+                        }
+                    }
+                }
+                Button("Used", systemImage: "checkmark") {
+                    withAnimation {
+                        batch.useOne()
+                        try? context.save()
+                    }
+                }
+                Button("Threw Away", systemImage: "trash", role: .destructive) {
+                    withAnimation {
+                        batch.useOne(wasted: true)
+                        try? context.save()
+                    }
+                }
+            }
             .swipeActions(edge: .leading) {
                 if let item = batch.item {
                     Button("Bought Again", systemImage: "arrow.clockwise") { target = .restock(item) }
                         .tint(.accentColor)
                 }
             }
+        }
+    }
+
+    private func levelBinding(_ batch: Batch) -> Binding<Level> {
+        Binding {
+            Level(rawValue: batch.level) ?? .full
+        } set: { level in
+            batch.setLevel(level)
+            try? context.save()
         }
     }
 }
@@ -71,6 +114,15 @@ struct BatchRow: View {
                     }
                 }
                 HStack(spacing: 6) {
+                    if batch.needsDateCheck {
+                        Label("Check date", systemImage: "exclamationmark.circle.fill")
+                            .labelStyle(.titleAndIcon)
+                            .foregroundStyle(Color.soon)
+                    }
+                    if batch.location?.isFreezer == true {
+                        Image(systemName: "snowflake")
+                            .accessibilityLabel(Text("Frozen"))
+                    }
                     if let path = batch.location?.path {
                         Text(path)
                     }

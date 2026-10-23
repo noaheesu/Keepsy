@@ -31,11 +31,29 @@ extension Item {
         draft.fill(from: self)
         return try draft.save(to: nil, in: context)
     }
+
+    /// Learns how often this gets bought, as a running average of the gaps between purchases.
+    func recordPurchase(at now: Date = .now) {
+        if let last = lastBoughtAt {
+            let days = now.timeIntervalSince(last) / 86_400
+            // Several batches added the same day are one shopping trip.
+            guard days >= 0.5 else { return }
+            restockDays = restockDays == 0 ? days : (restockDays + days) / 2
+        }
+        lastBoughtAt = now
+    }
 }
 
 extension Batch {
-    /// One unit consumed; the last one removes the batch, which makes the item a shopping suggestion.
-    func useOne() {
+    /// One unit used up or thrown away; the last one removes the batch, which makes the item a shopping suggestion.
+    func useOne(wasted: Bool = false) {
+        if let context = managedObjectContext {
+            let event = UsageEvent(context: context)
+            event.id = UUID()
+            event.at = .now
+            event.wasted = wasted
+            event.item = item
+        }
         guard quantity > 1 else {
             managedObjectContext?.delete(self)
             return
@@ -43,6 +61,19 @@ extension Batch {
         quantity -= 1
         level = Level.full.rawValue
         levelUpdatedAt = .now
+    }
+
+    func setLevel(_ newLevel: Level) {
+        level = newLevel.rawValue
+        levelUpdatedAt = .now
+    }
+
+    /// Moves into the freezer and gives a month more, counted from today if it had already run out.
+    func freeze(into freezer: Location, now: Date = .now) {
+        location = freezer
+        if let expiresAt {
+            self.expiresAt = Calendar.current.date(byAdding: .month, value: 1, to: max(expiresAt, now))
+        }
     }
 }
 
@@ -98,9 +129,13 @@ struct BatchDraft {
         if existing != nil || photo != nil {
             item.photo = photo
         }
+        if existing == nil {
+            item.recordPurchase()
+        }
         batch.item = item
         batch.location = location
         batch.expiresAt = hasExpiry ? expiresAt : nil
+        batch.needsDateCheck = false
         batch.quantity = Int16(quantity)
         if existing == nil || batch.level != level.rawValue {
             batch.level = level.rawValue

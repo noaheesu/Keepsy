@@ -15,6 +15,7 @@ struct BatchEditor: View {
     @State private var pickedPhoto: PhotosPickerItem?
     @State private var showSaveError = false
     @State private var scanningDate = false
+    @State private var showsQuantity = false
 
     init(target: EditorTarget) {
         switch target {
@@ -26,6 +27,7 @@ struct BatchEditor: View {
             self.batch = batch
             isRestock = false
             _draft = State(initialValue: BatchDraft(batch: batch))
+            _showsQuantity = State(initialValue: batch.quantity > 1)
         case .restock(let item):
             batch = nil
             isRestock = true
@@ -64,7 +66,14 @@ struct BatchEditor: View {
                 }
                 expirySection
                 Section {
-                    Stepper("Quantity: \(draft.quantity)", value: $draft.quantity, in: 1...99)
+                    // Most things are not counted; the stepper only shows once asked for.
+                    if showsQuantity {
+                        Stepper("Quantity: \(draft.quantity)", value: $draft.quantity, in: 1...99)
+                    } else {
+                        Button("Add Count", systemImage: "number") {
+                            withAnimation { showsQuantity = true }
+                        }
+                    }
                     LevelPicker(selection: $draft.level)
                 } header: {
                     Text("Amount")

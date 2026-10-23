@@ -4,7 +4,7 @@ struct ShoppingView: View {
     @Environment(\.managedObjectContext) private var context
     @FetchRequest(sortDescriptors: [SortDescriptor(\ShoppingEntry.isDone), SortDescriptor(\ShoppingEntry.createdAt)])
     private var entries: FetchedResults<ShoppingEntry>
-    @State private var suggestions: [Item] = []
+    @State private var suggestions: [Suggestion] = []
     @State private var newName = ""
 
     var body: some View {
@@ -13,13 +13,13 @@ struct ShoppingView: View {
             List {
                 if !suggestions.isEmpty {
                     Section {
-                        SuggestionChips(items: suggestions) { item in
+                        SuggestionChips(suggestions: suggestions) { item in
                             withAnimation { try? Shopping.add(item.name ?? "", item: item, in: context) }
                         }
                         .listRowInsets(EdgeInsets())
                         .listRowBackground(Color.clear)
                     } header: {
-                        Text("Ran out or past date. Buy again?")
+                        Text("Buy again?")
                     }
                 }
                 Section {
@@ -48,7 +48,7 @@ struct ShoppingView: View {
                     ContentUnavailableView {
                         Label("Your list is empty", systemImage: "cart")
                     } description: {
-                        Text("Type what you need above. Things you mark as used show up here as suggestions.")
+                        Text("Type what you need above. Things that run out, or that you usually buy around now, show up here.")
                     }
                     .allowsHitTesting(false)
                 }
@@ -90,20 +90,34 @@ struct ShoppingView: View {
 }
 
 private struct SuggestionChips: View {
-    let items: [Item]
+    let suggestions: [Suggestion]
     let add: (Item) -> Void
 
     var body: some View {
         ScrollView(.horizontal, showsIndicators: false) {
             HStack(spacing: 8) {
-                ForEach(items) { item in
-                    Button { add(item) } label: {
-                        Label(item.name ?? "", systemImage: "plus")
-                            .font(.subheadline.weight(.medium))
-                            .padding(.horizontal, 14)
-                            .padding(.vertical, 8)
-                            .foregroundStyle(Color.accentColor)
-                            .background(Color.accentColor.opacity(0.12), in: .capsule)
+                ForEach(suggestions) { suggestion in
+                    Button { add(suggestion.item) } label: {
+                        HStack(spacing: 6) {
+                            Image(systemName: "plus")
+                                .accessibilityHidden(true)
+                            VStack(alignment: .leading, spacing: 0) {
+                                Text(suggestion.item.name ?? "")
+                                    .font(.subheadline.weight(.semibold))
+                                Group {
+                                    switch suggestion.reason {
+                                    case .ranOut: Text("Ran out")
+                                    case .usual(let days): Text("Every \(days) days")
+                                    }
+                                }
+                                .font(.caption2)
+                                .opacity(0.8)
+                            }
+                        }
+                        .padding(.horizontal, 14)
+                        .padding(.vertical, 8)
+                        .foregroundStyle(Color.accentColor)
+                        .background(Color.accentColor.opacity(0.12), in: .capsule)
                     }
                     .buttonStyle(.plain)
                 }

@@ -1,16 +1,38 @@
 import CoreData
 
+struct Suggestion: Identifiable {
+    enum Reason: Equatable {
+        case ranOut
+        /// Usually bought every this many days, and that long has passed.
+        case usual(days: Int)
+    }
+
+    let item: Item
+    let reason: Reason
+
+    var id: NSManagedObjectID { item.objectID }
+}
+
 enum Shopping {
-    /// Items worth rebuying: nothing usable left at home (used up, empty or expired) and not already on the list.
-    static func suggestions(in context: NSManagedObjectContext, now: Date = .now) throws -> [Item] {
+    /// Items worth rebuying and not already on the list: nothing usable left at home (used up, empty or expired),
+    /// or it is about the time it usually gets bought again.
+    static func suggestions(in context: NSManagedObjectContext, now: Date = .now) throws -> [Suggestion] {
         let open = ShoppingEntry.fetchRequest()
         open.predicate = NSPredicate(format: "isDone == NO")
         let listed = Set(try context.fetch(open).compactMap(\.item))
         return try context.fetch(Item.fetchRequest())
-            .filter { item in
-                !listed.contains(item) && !((item.batches as? Set<Batch>) ?? []).contains { isUsable($0, now: now) }
+            .filter { !listed.contains($0) }
+            .compactMap { item -> Suggestion? in
+                if !((item.batches as? Set<Batch>) ?? []).contains(where: { isUsable($0, now: now) }) {
+                    return Suggestion(item: item, reason: .ranOut)
+                }
+                if item.restockDays > 0, let last = item.lastBoughtAt,
+                   now.timeIntervalSince(last) / 86_400 >= item.restockDays {
+                    return Suggestion(item: item, reason: .usual(days: max(1, Int(item.restockDays.rounded()))))
+                }
+                return nil
             }
-            .sorted { ($0.name ?? "").localizedStandardCompare($1.name ?? "") == .orderedAscending }
+            .sorted { ($0.item.name ?? "").localizedStandardCompare($1.item.name ?? "") == .orderedAscending }
     }
 
     static func isUsable(_ batch: Batch, now: Date) -> Bool {
@@ -23,7 +45,10 @@ enum Shopping {
         let done = ShoppingEntry.fetchRequest()
         done.predicate = NSPredicate(format: "isDone == YES")
         for entry in try context.fetch(done) {
-            try entry.item?.restock(in: context)
+            if let batch = try entry.item?.restock(in: context), batch.expiresAt != nil {
+                // The date is a guess from last time until someone looks at the package.
+                batch.needsDateCheck = true
+            }
             context.delete(entry)
         }
         try context.save()

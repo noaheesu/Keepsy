@@ -175,7 +175,7 @@ struct ShoppingTests {
         let usedUp = try stock("UsedUp")
         (usedUp?.batches as? Set<Batch>)?.forEach(context.delete)
 
-        let names = try Shopping.suggestions(in: context).compactMap(\.name)
+        let names = try Shopping.suggestions(in: context).compactMap(\.item.name)
         #expect(names == ["Empty", "Expired", "UsedUp"])
     }
 
@@ -188,7 +188,7 @@ struct ShoppingTests {
         #expect(batch.level == Level.full.rawValue)
         batch.useOne()
         try context.save()
-        #expect(try Shopping.suggestions(in: context).compactMap(\.name) == ["Eggs"])
+        #expect(try Shopping.suggestions(in: context).compactMap(\.item.name) == ["Eggs"])
     }
 
     @Test func putAwayRestocksBoughtItemsWithLastShelfLife() throws {
@@ -208,6 +208,55 @@ struct ShoppingTests {
         #expect(milkBatch.expiresAt.map { Expiry.daysLeft(until: $0) } == 10)
         #expect((soap.batches as? Set<Batch>)?.first?.expiresAt == nil)
         #expect(try context.count(for: Item.fetchRequest()) == 2)
+    }
+
+    @Test func suggestsUsualRebuyOnceItsRhythmHasPassed() throws {
+        let milk = try #require(try stock("Milk"))
+        let start = Date.now.addingTimeInterval(-20 * 86_400)
+        milk.lastBoughtAt = nil
+        milk.recordPurchase(at: start)
+        milk.recordPurchase(at: start.addingTimeInterval(4 * 86_400))
+        milk.recordPurchase(at: start.addingTimeInterval(4.2 * 86_400))
+        milk.recordPurchase(at: start.addingTimeInterval(10 * 86_400))
+        #expect(milk.restockDays == 5)
+
+        #expect(try Shopping.suggestions(in: context, now: start.addingTimeInterval(13 * 86_400)).isEmpty)
+        let due = try Shopping.suggestions(in: context, now: start.addingTimeInterval(15 * 86_400))
+        #expect(due.map(\.reason) == [.usual(days: 5)])
+    }
+
+    @Test func usageIsLoggedAsUsedOrWasted() throws {
+        let item = try #require(try stock("Bread"))
+        let batch = try #require((item.batches as? Set<Batch>)?.first)
+        batch.quantity = 2
+        batch.useOne()
+        batch.useOne(wasted: true)
+        try context.save()
+        let events = (item.usageEvents as? Set<UsageEvent>) ?? []
+        #expect(events.count == 2)
+        #expect(events.filter(\.wasted).count == 1)
+    }
+
+    @Test func putAwayFlagsGuessedDatesUntilEdited() throws {
+        let milk = try #require(try stock("Milk", daysLeft: 10))
+        (milk.batches as? Set<Batch>)?.forEach(context.delete)
+        try Shopping.add("Milk", in: context)
+        try context.fetch(ShoppingEntry.fetchRequest()).forEach { $0.isDone = true }
+        try Shopping.putAway(in: context)
+
+        let batch = try #require((milk.batches as? Set<Batch>)?.first)
+        #expect(batch.needsDateCheck)
+        try BatchDraft(batch: batch).save(to: batch, in: context)
+        #expect(!batch.needsDateCheck)
+    }
+
+    @Test func freezingMovesAndExtends() throws {
+        let item = try #require(try stock("Beef", daysLeft: -2))
+        let batch = try #require((item.batches as? Set<Batch>)?.first)
+        let freezer = Location.make("Freezer", parent: nil, in: context)
+        batch.freeze(into: freezer)
+        #expect(batch.location == freezer)
+        #expect(batch.expiresAt.map { Expiry.daysLeft(until: $0) } ?? 0 >= 28)
     }
 
     @Test func typedEntryLinksItemAndHidesSuggestion() throws {
