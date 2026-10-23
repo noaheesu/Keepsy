@@ -18,6 +18,17 @@ enum Shopping {
         return batch.expiresAt.map { Expiry.daysLeft(until: $0, from: now) >= 0 } ?? true
     }
 
+    /// Bought items go back into stock; entries for never-stocked names are just cleared, as there is nothing to copy.
+    static func putAway(in context: NSManagedObjectContext) throws {
+        let done = ShoppingEntry.fetchRequest()
+        done.predicate = NSPredicate(format: "isDone == YES")
+        for entry in try context.fetch(done) {
+            try entry.item?.restock(in: context)
+            context.delete(entry)
+        }
+        try context.save()
+    }
+
     /// Typed names link to a known item so it drops out of suggestions.
     static func add(_ name: String, item: Item? = nil, in context: NSManagedObjectContext) throws {
         let trimmed = name.trimmingCharacters(in: .whitespacesAndNewlines)

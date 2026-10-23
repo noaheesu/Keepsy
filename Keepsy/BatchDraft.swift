@@ -23,6 +23,27 @@ extension Item {
         request.fetchLimit = 1
         return try context.fetch(request).first
     }
+
+    /// Bought again: a new batch where and for as long as last time.
+    @discardableResult
+    func restock(in context: NSManagedObjectContext) throws -> Batch {
+        var draft = BatchDraft()
+        draft.fill(from: self)
+        return try draft.save(to: nil, in: context)
+    }
+}
+
+extension Batch {
+    /// One unit consumed; the last one removes the batch, which makes the item a shopping suggestion.
+    func useOne() {
+        guard quantity > 1 else {
+            managedObjectContext?.delete(self)
+            return
+        }
+        quantity -= 1
+        level = Level.full.rawValue
+        levelUpdatedAt = .now
+    }
 }
 
 /// Editable copy of a batch and its item, written back to Core Data only on save.
@@ -54,10 +75,8 @@ struct BatchDraft {
         name = item.name ?? name
         location = item.lastLocation
         photo = item.photo
-        if item.shelfLifeDays > 0 {
-            hasExpiry = true
-            expiresAt = Calendar.current.date(byAdding: .day, value: Int(item.shelfLifeDays), to: now) ?? now
-        }
+        hasExpiry = item.shelfLifeDays > 0
+        expiresAt = Calendar.current.date(byAdding: .day, value: Int(item.shelfLifeDays), to: now) ?? now
     }
 
     private var trimmedName: String { name.trimmingCharacters(in: .whitespacesAndNewlines) }

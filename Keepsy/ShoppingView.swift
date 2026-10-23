@@ -40,10 +40,14 @@ struct ShoppingView: View {
             .navigationTitle("Shopping")
             .toolbar {
                 if entries.contains(where: \.isDone) {
-                    Button("Clear Done") {
-                        entries.filter(\.isDone).forEach(context.delete)
-                        try? context.save()
+                    Button("Put Away", systemImage: "house") {
+                        do {
+                            try Shopping.putAway(in: context)
+                        } catch {
+                            context.rollback()
+                        }
                     }
+                    .labelStyle(.titleAndIcon)
                 }
             }
             .task { refreshSuggestions() }

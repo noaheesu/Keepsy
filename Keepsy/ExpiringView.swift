@@ -65,7 +65,7 @@ struct ExpiringView: View {
     }
 }
 
-/// Tappable batch rows with swipe-to-delete; the owning list presents the editor for `editing`.
+/// Tappable batch rows with quick "used one" / "bought again" swipes; the owning list presents the editor for `editing`.
 struct BatchRows: View {
     let batches: FetchedResults<Batch>
     @Binding var editing: Batch?
@@ -77,10 +77,21 @@ struct BatchRows: View {
                 BatchRow(batch: batch)
             }
             .tint(.primary)
-        }
-        .onDelete { offsets in
-            offsets.map { batches[$0] }.forEach(context.delete)
-            try? context.save()
+            .swipeActions(edge: .trailing) {
+                Button("Used", systemImage: "checkmark") {
+                    batch.useOne()
+                    try? context.save()
+                }
+                .tint(.green)
+            }
+            .swipeActions(edge: .leading) {
+                if let item = batch.item {
+                    Button("Bought Again", systemImage: "arrow.clockwise") {
+                        _ = try? item.restock(in: context)
+                    }
+                    .tint(.blue)
+                }
+            }
         }
     }
 }

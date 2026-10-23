@@ -54,6 +54,16 @@
         }
       }
     },
+    "Bought Again": {
+      "localizations": {
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "또 샀음"
+          }
+        }
+      }
+    },
     "Cancel": {
       "localizations": {
         "ko": {
@@ -70,16 +80,6 @@
           "stringUnit": {
             "state": "translated",
             "value": "사진 선택"
-          }
-        }
-      }
-    },
-    "Clear Done": {
-      "localizations": {
-        "ko": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "완료 항목 지우기"
           }
         }
       }
@@ -377,6 +377,16 @@
         }
       }
     },
+    "Put Away": {
+      "localizations": {
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "집에 넣기"
+          }
+        }
+      }
+    },
     "Quantity: %lld": {
       "localizations": {
         "ko": {
@@ -473,6 +483,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "시간"
+          }
+        }
+      }
+    },
+    "Used": {
+      "localizations": {
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "다 씀"
           }
         }
       }

@@ -166,6 +166,37 @@ struct ShoppingTests {
         #expect(names == ["Empty", "Expired", "UsedUp"])
     }
 
+    @Test func useOneDecrementsThenRemoves() throws {
+        let item = try #require(try stock("Eggs", level: .half))
+        let batch = try #require((item.batches as? Set<Batch>)?.first)
+        batch.quantity = 2
+        batch.useOne()
+        #expect(batch.quantity == 1)
+        #expect(batch.level == Level.full.rawValue)
+        batch.useOne()
+        try context.save()
+        #expect(try Shopping.suggestions(in: context).compactMap(\.name) == ["Eggs"])
+    }
+
+    @Test func putAwayRestocksBoughtItemsWithLastShelfLife() throws {
+        let milk = try #require(try stock("Milk", daysLeft: 10))
+        (milk.batches as? Set<Batch>)?.forEach(context.delete)
+        let soap = try #require(try stock("Soap", daysLeft: nil))
+        (soap.batches as? Set<Batch>)?.forEach(context.delete)
+        try Shopping.add("Milk", in: context)
+        try Shopping.add("Soap", in: context)
+        try Shopping.add("Unknown", in: context)
+        try context.fetch(ShoppingEntry.fetchRequest()).forEach { $0.isDone = true }
+
+        try Shopping.putAway(in: context)
+
+        #expect(try context.count(for: ShoppingEntry.fetchRequest()) == 0)
+        let milkBatch = try #require((milk.batches as? Set<Batch>)?.first)
+        #expect(milkBatch.expiresAt.map { Expiry.daysLeft(until: $0) } == 10)
+        #expect((soap.batches as? Set<Batch>)?.first?.expiresAt == nil)
+        #expect(try context.count(for: Item.fetchRequest()) == 2)
+    }
+
     @Test func typedEntryLinksItemAndHidesSuggestion() throws {
         _ = try stock("Milk", level: .empty)
         try Shopping.add(" milk ", in: context)
