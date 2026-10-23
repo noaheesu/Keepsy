@@ -19,7 +19,7 @@ Keepsy does not collect, sell or share any personal data.
 - **Notifications.** Daily reminders are scheduled on your device. No notification data leaves your iPhone.
 - **Deleting your data.** Settings → Delete All Data removes everything, including the copy in your iCloud account and on your other devices. You can also remove Keepsy's iCloud data in iOS Settings → [your name] → iCloud.
 
-Questions: [open an issue](https://github.com/noaheesu/Keepsy/issues).
+Questions: [dev.noahchoi@gmail.com](mailto:dev.noahchoi@gmail.com)
 
 ## 개인정보처리방침
 
@@ -34,4 +34,4 @@ Keepsy는 어떤 개인정보도 수집, 판매, 공유하지 않습니다.
 - **알림.** 매일 알림은 기기 안에서 예약되며, 알림 정보가 iPhone 밖으로 나가지 않습니다.
 - **데이터 삭제.** 설정 → 모든 데이터 삭제로 iCloud와 다른 기기에 있는 기록까지 전부 지울 수 있습니다. iOS 설정 → [사용자 이름] → iCloud에서도 Keepsy의 iCloud 데이터를 지울 수 있습니다.
 
-문의: [GitHub 이슈 남기기](https://github.com/noaheesu/Keepsy/issues)
+문의: [dev.noahchoi@gmail.com](mailto:dev.noahchoi@gmail.com)

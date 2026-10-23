@@ -69,5 +69,5 @@ No account, no ads, no tracking. Your items stay in your own iCloud.
 - Age rating: 4+.
 - App Privacy: Data Not Collected.
 - Privacy Policy URL: https://noaheesu.github.io/Keepsy/privacy
-- Support URL: https://github.com/noaheesu/Keepsy/issues
+- Support URL: https://noaheesu.github.io/Keepsy/
 - Export compliance: no non-exempt encryption (ITSAppUsesNonExemptEncryption = NO).
