@@ -70,6 +70,33 @@ struct BatchDraftTests {
     }
 }
 
+struct PackageDateTests {
+    let calendar = Calendar(identifier: .gregorian)
+    var now: Date { calendar.date(from: DateComponents(year: 2026, month: 10, day: 23)) ?? .now }
+
+    func ymd(_ text: String) -> [Int]? {
+        PackageDate.parse(text, now: now, calendar: calendar).map {
+            let c = calendar.dateComponents([.year, .month, .day], from: $0)
+            return [c.year ?? 0, c.month ?? 0, c.day ?? 0]
+        }
+    }
+
+    @Test func readsCommonKoreanFormats() {
+        #expect(ymd("소비기한: 2026.10.25까지") == [2026, 10, 25])
+        #expect(ymd("26-11-03") == [2026, 11, 3])
+        #expect(ymd("2027년 1월 5일") == [2027, 1, 5])
+        #expect(ymd("20261231") == [2026, 12, 31])
+        #expect(ymd("2026. 10. 25") == [2026, 10, 25])
+    }
+
+    @Test func prefersLatestDateAndRejectsNonsense() {
+        #expect(ymd("제조일 2026.10.01 소비기한 2026.10.20") == [2026, 10, 20])
+        #expect(ymd("2026.13.40") == nil)
+        #expect(ymd("Lot 12.10.05") == nil)
+        #expect(ymd("no date here") == nil)
+    }
+}
+
 struct ReminderDigestTests {
     let calendar = Calendar(identifier: .gregorian)
 

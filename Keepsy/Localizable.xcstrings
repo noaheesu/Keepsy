@@ -357,6 +357,16 @@
         }
       }
     },
+    "Point the camera at the date on the package": {
+      "localizations": {
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "포장지의 날짜를 카메라로 비춰주세요"
+          }
+        }
+      }
+    },
     "Previously added": {
       "localizations": {
         "ko": {
@@ -413,6 +423,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "저장"
+          }
+        }
+      }
+    },
+    "Scan Date": {
+      "localizations": {
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "날짜 스캔"
           }
         }
       }

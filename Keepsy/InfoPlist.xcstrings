@@ -1,0 +1,12 @@
+{
+  "sourceLanguage" : "en",
+  "strings" : {
+    "NSCameraUsageDescription" : {
+      "localizations" : {
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Keepsy uses the camera to read expiration dates on packages." } },
+        "ko" : { "stringUnit" : { "state" : "translated", "value" : "포장지의 소비기한을 읽기 위해 카메라를 사용해요." } }
+      }
+    }
+  },
+  "version" : "1.0"
+}

@@ -13,6 +13,7 @@ struct BatchEditor: View {
     @State private var draft: BatchDraft
     @State private var pickedPhoto: PhotosPickerItem?
     @State private var showSaveError = false
+    @State private var scanningDate = false
 
     init(batch: Batch?, location: Location? = nil) {
         self.batch = batch
@@ -42,6 +43,9 @@ struct BatchEditor: View {
                     Toggle("Expires", isOn: $draft.hasExpiry)
                     if draft.hasExpiry {
                         DatePicker("Expiration date", selection: $draft.expiresAt, displayedComponents: .date)
+                        if DateScanner.isAvailable {
+                            Button("Scan Date", systemImage: "camera.viewfinder") { scanningDate = true }
+                        }
                     }
                     Stepper("Quantity: \(draft.quantity)", value: $draft.quantity, in: 1...99)
                 }
@@ -86,6 +90,9 @@ struct BatchEditor: View {
                 draft.photo = data.downscaledJPEG()
             }
             .alert("Couldn't save", isPresented: $showSaveError) {}
+            .fullScreenCover(isPresented: $scanningDate) {
+                DateScannerSheet { draft.expiresAt = $0 }
+            }
         }
     }
 
