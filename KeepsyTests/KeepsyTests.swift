@@ -248,6 +248,25 @@ struct ShoppingTests {
         #expect(events.filter(\.wasted).count == 1)
     }
 
+    @Test func wasteStatsCountRecentEventsAndRankWastedItems() throws {
+        for (name, wasted) in [("Bread", true), ("Bread", true), ("Milk", true), ("Milk", false), ("Eggs", false)] {
+            let event = UsageEvent(context: context)
+            event.at = .now
+            event.wasted = wasted
+            event.item = try Item.named(name, in: context) ?? stock(name)
+        }
+        let old = UsageEvent(context: context)
+        old.at = Calendar.current.date(byAdding: .day, value: -31, to: .now)
+        old.wasted = true
+        try context.save()
+
+        let stats = try Waste.stats(in: context)
+        #expect(stats.used == 2)
+        #expect(stats.wasted == 3)
+        #expect(stats.wastedShare == 0.6)
+        #expect(stats.topWasted.map(\.name) == ["Bread", "Milk"])
+    }
+
     @Test func putAwayFlagsGuessedDatesUntilEdited() throws {
         let milk = try #require(try stock("Milk", daysLeft: 10))
         (milk.batches as? Set<Batch>)?.forEach(context.delete)

@@ -683,6 +683,16 @@
         }
       }
     },
+    "Last %lld days": {
+      "localizations": {
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "최근 %lld일"
+          }
+        }
+      }
+    },
     "Later": {
       "localizations": {
         "ko": {
@@ -819,6 +829,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "이번 주에 끝나는 건 없어요"
+          }
+        }
+      }
+    },
+    "Nothing used up yet": {
+      "localizations": {
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "아직 기록이 없어요"
           }
         }
       }
@@ -1063,6 +1083,16 @@
         }
       }
     },
+    "Swipe items as used up or long-press them as thrown away to see how much gets wasted.": {
+      "localizations": {
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "밀어서 \"다 씀\", 길게 눌러 \"버렸어요\"를 기록하면 얼마나 버리는지 보여드려요."
+          }
+        }
+      }
+    },
     "Swipe left when you finish something. Swipe right when you buy it again, and Keepsy fills in where it goes and how long it lasts.": {
       "localizations": {
         "ko": {
@@ -1109,6 +1139,26 @@
           "stringUnit": {
             "state": "translated",
             "value": "버렸어요"
+          }
+        }
+      }
+    },
+    "Thrown away": {
+      "localizations": {
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "버림"
+          }
+        }
+      }
+    },
+    "Thrown away most": {
+      "localizations": {
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "자주 버리는 것"
           }
         }
       }
@@ -1183,12 +1233,42 @@
         }
       }
     },
+    "Used up": {
+      "localizations": {
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "다 씀"
+          }
+        }
+      }
+    },
     "Version": {
       "localizations": {
         "ko": {
           "stringUnit": {
             "state": "translated",
             "value": "버전"
+          }
+        }
+      }
+    },
+    "Waste": {
+      "localizations": {
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "버림 통계"
+          }
+        }
+      }
+    },
+    "Wasted": {
+      "localizations": {
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "버린 비율"
           }
         }
       }

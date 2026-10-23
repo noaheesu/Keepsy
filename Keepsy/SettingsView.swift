@@ -34,6 +34,14 @@ struct SettingsView: View {
                 }
 
                 Section {
+                    NavigationLink {
+                        WasteView()
+                    } label: {
+                        Label("Waste", systemImage: "chart.bar")
+                    }
+                }
+
+                Section {
                     if let settings = AppLinks.systemSettings {
                         Button("Language and Permissions", systemImage: "gear") { openURL(settings) }
                     }
