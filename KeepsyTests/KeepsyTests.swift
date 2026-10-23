@@ -22,10 +22,7 @@ struct ExpiryTests {
         #expect(Expiry.remaining(addedAt: date(20, 0), expiresAt: date(20, 0), now: date(20, 0)) == 0)
     }
 
-    @Test func dueCountsBucketByDayAndUrgencyBoundaries() {
-        let now = date(23, 8)
-        let counts = Expiry.dueCounts([date(23, 20), date(24, 1), date(24, 9), date(30, 0), date(22, 0)], from: now, calendar: calendar)
-        #expect(counts == [1, 2, 0, 0, 0, 0, 0])
+    @Test func urgencyBoundaries() {
         #expect(Expiry.Urgency(daysLeft: -1) == .overdue)
         #expect(Expiry.Urgency(daysLeft: 1) == .imminent)
         #expect(Expiry.Urgency(daysLeft: 7) == .thisWeek)

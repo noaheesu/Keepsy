@@ -31,18 +31,6 @@ enum Expiry {
         return min(max(expiresAt.timeIntervalSince(now) / total, 0), 1)
     }
 
-    /// How many dates fall on each of the next `days` days, today first.
-    static func dueCounts(_ dates: [Date], days: Int = soonDays, from now: Date = .now, calendar: Calendar = .current) -> [Int] {
-        var counts = Array(repeating: 0, count: days)
-        for date in dates {
-            let offset = daysLeft(until: date, from: now, calendar: calendar)
-            if counts.indices.contains(offset) {
-                counts[offset] += 1
-            }
-        }
-        return counts
-    }
-
     enum Urgency: CaseIterable {
         case overdue, imminent, thisWeek, later
 

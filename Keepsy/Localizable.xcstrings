@@ -14,34 +14,6 @@
     "%@ · %@ · %@": {
       "shouldTranslate": false
     },
-    "%@, %lld items": {
-      "localizations": {
-        "en": {
-          "variations": {
-            "plural": {
-              "one": {
-                "stringUnit": {
-                  "state": "translated",
-                  "value": "%1$@, %2$lld item"
-                }
-              },
-              "other": {
-                "stringUnit": {
-                  "state": "translated",
-                  "value": "%1$@, %2$lld items"
-                }
-              }
-            }
-          }
-        },
-        "ko": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "%1$@, 물건 %2$lld개"
-          }
-        }
-      }
-    },
     "%lld items": {
       "localizations": {
         "en": {
@@ -66,16 +38,6 @@
           "stringUnit": {
             "state": "translated",
             "value": "물건 %lld개"
-          }
-        }
-      }
-    },
-    "%lld past date": {
-      "localizations": {
-        "ko": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "기한 지난 물건 %lld개"
           }
         }
       }
@@ -204,16 +166,6 @@
           "stringUnit": {
             "state": "translated",
             "value": "냉장고와 찬장에 있는 걸 등록하면 먼저 써야 할 것부터 보여드려요."
-          }
-        }
-      }
-    },
-    "All": {
-      "localizations": {
-        "ko": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "전체"
           }
         }
       }
