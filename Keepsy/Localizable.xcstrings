@@ -34,6 +34,16 @@
         }
       }
     },
+    "Add to list": {
+      "localizations": {
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "목록에 추가"
+          }
+        }
+      }
+    },
     "Cancel": {
       "localizations": {
         "ko": {
@@ -50,6 +60,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "사진 선택"
+          }
+        }
+      }
+    },
+    "Clear Done": {
+      "localizations": {
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "완료 항목 지우기"
           }
         }
       }
@@ -287,6 +307,16 @@
         }
       }
     },
+    "Previously added": {
+      "localizations": {
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "이전에 추가한 물건"
+          }
+        }
+      }
+    },
     "Quantity: %lld": {
       "localizations": {
         "ko": {
@@ -333,6 +363,26 @@
           "stringUnit": {
             "state": "translated",
             "value": "저장"
+          }
+        }
+      }
+    },
+    "Shopping": {
+      "localizations": {
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "장보기"
+          }
+        }
+      }
+    },
+    "Suggestions": {
+      "localizations": {
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "추천"
           }
         }
       }

@@ -12,6 +12,9 @@ struct ContentView: View {
                         .navigationDestination(for: Location.self) { LocationList(parent: $0) }
                 }
             }
+            Tab("Shopping", systemImage: "cart") {
+                ShoppingView()
+            }
         }
     }
 }

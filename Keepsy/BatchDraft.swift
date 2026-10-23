@@ -16,6 +16,15 @@ enum Level: Int16, CaseIterable, Identifiable {
     }
 }
 
+extension Item {
+    static func named(_ name: String, in context: NSManagedObjectContext) throws -> Item? {
+        let request = Item.fetchRequest()
+        request.predicate = NSPredicate(format: "name =[c] %@", name)
+        request.fetchLimit = 1
+        return try context.fetch(request).first
+    }
+}
+
 /// Editable copy of a batch and its item, written back to Core Data only on save.
 struct BatchDraft {
     var name = ""
@@ -40,6 +49,17 @@ struct BatchDraft {
         photo = batch.item?.photo
     }
 
+    /// Re-adding something bought before: same place, same shelf life counted from today.
+    mutating func fill(from item: Item, now: Date = .now) {
+        name = item.name ?? name
+        location = item.lastLocation
+        photo = item.photo
+        if item.shelfLifeDays > 0 {
+            hasExpiry = true
+            expiresAt = Calendar.current.date(byAdding: .day, value: Int(item.shelfLifeDays), to: now) ?? now
+        }
+    }
+
     private var trimmedName: String { name.trimmingCharacters(in: .whitespacesAndNewlines) }
 
     var isValid: Bool { !trimmedName.isEmpty }
@@ -52,8 +72,10 @@ struct BatchDraft {
             batch.addedAt = .now
         }
         // A new batch with a known name joins that item, so its history stays in one place.
-        let item = try batch.item ?? existingItem(in: context) ?? newItem(in: context)
+        let item = try batch.item ?? Item.named(trimmedName, in: context) ?? newItem(in: context)
         item.name = trimmedName
+        item.lastLocation = location
+        item.shelfLifeDays = hasExpiry ? Int16(clamping: Expiry.daysLeft(until: expiresAt, from: batch.addedAt ?? .now)) : 0
         if existing != nil || photo != nil {
             item.photo = photo
         }
@@ -67,13 +89,6 @@ struct BatchDraft {
         }
         try context.save()
         return batch
-    }
-
-    private func existingItem(in context: NSManagedObjectContext) throws -> Item? {
-        let request = Item.fetchRequest()
-        request.predicate = NSPredicate(format: "name =[c] %@", trimmedName)
-        request.fetchLimit = 1
-        return try context.fetch(request).first
     }
 
     private func newItem(in context: NSManagedObjectContext) -> Item {

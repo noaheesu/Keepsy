@@ -8,6 +8,8 @@ struct BatchEditor: View {
     @Environment(\.dismiss) private var dismiss
     @FetchRequest(sortDescriptors: [SortDescriptor(\Location.sortOrder), SortDescriptor(\Location.name)])
     private var locations: FetchedResults<Location>
+    @FetchRequest(sortDescriptors: [SortDescriptor(\Item.name)], predicate: NSPredicate(value: false))
+    private var previousItems: FetchedResults<Item>
     @State private var draft: BatchDraft
     @State private var pickedPhoto: PhotosPickerItem?
     @State private var showSaveError = false
@@ -24,8 +26,15 @@ struct BatchEditor: View {
                     TextField("Name", text: $draft.name)
                     Picker("Location", selection: $draft.location) {
                         Text("None").tag(Location?.none)
-                        ForEach(locations) { location in
+                        ForEach(locations.sorted { $0.treeOrder.lexicographicallyPrecedes($1.treeOrder) }) { location in
                             Text(location.path).tag(Optional(location))
+                        }
+                    }
+                }
+                if batch == nil && !previousItems.isEmpty {
+                    Section("Previously added") {
+                        ForEach(previousItems.prefix(5)) { item in
+                            Button(item.name ?? "") { draft.fill(from: item) }
                         }
                     }
                 }
@@ -65,6 +74,12 @@ struct BatchEditor: View {
                     Button("Save", action: save)
                         .disabled(!draft.isValid)
                 }
+            }
+            .onChange(of: draft.name) {
+                let name = draft.name.trimmingCharacters(in: .whitespaces)
+                previousItems.nsPredicate = name.isEmpty
+                    ? NSPredicate(value: false)
+                    : NSPredicate(format: "name CONTAINS[cd] %@ AND NOT (name ==[c] %@)", name, name)
             }
             .task(id: pickedPhoto) {
                 guard let data = try? await pickedPhoto?.loadTransferable(type: Data.self) else { return }

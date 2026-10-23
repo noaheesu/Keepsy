@@ -11,6 +11,9 @@ extension Location {
 
     var canHaveChildren: Bool { depth < Self.maxDepth }
 
+    /// Sort key that lists the tree depth-first: Kitchen, Kitchen › Fridge, Kitchen › Freezer, Bathroom…
+    var treeOrder: [Int16] { (parent?.treeOrder ?? []) + [sortOrder] }
+
     @discardableResult
     static func make(_ name: String, parent: Location?, in context: NSManagedObjectContext) -> Location {
         let siblings = Location.fetchRequest()

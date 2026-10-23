@@ -71,6 +71,59 @@ struct BatchDraftTests {
 }
 
 @MainActor
+struct ReAddTests {
+    let context = Persistence(inMemory: true).container.viewContext
+
+    @Test func fillCopiesLastPlaceAndShelfLife() throws {
+        let fridge = Location.make("Fridge", parent: nil, in: context)
+        var draft = BatchDraft(location: fridge)
+        draft.name = "Milk"
+        draft.expiresAt = Calendar.current.date(byAdding: .day, value: 10, to: .now) ?? .now
+        let batch = try draft.save(to: nil, in: context)
+        let item = try #require(batch.item)
+        context.delete(batch)
+
+        let later = Calendar.current.date(byAdding: .day, value: 30, to: .now) ?? .now
+        var again = BatchDraft()
+        again.fill(from: item, now: later)
+        #expect(again.location == fridge)
+        #expect(Expiry.daysLeft(until: again.expiresAt, from: later) == 10)
+    }
+}
+
+@MainActor
+struct ShoppingTests {
+    let context = Persistence(inMemory: true).container.viewContext
+
+    func stock(_ name: String, level: Level = .full, daysLeft: Int? = 5) throws -> Item? {
+        var draft = BatchDraft()
+        draft.name = name
+        draft.level = level
+        draft.hasExpiry = daysLeft != nil
+        draft.expiresAt = Calendar.current.date(byAdding: .day, value: daysLeft ?? 0, to: .now) ?? .now
+        return try draft.save(to: nil, in: context).item
+    }
+
+    @Test func suggestsOnlyItemsWithNothingUsableLeft() throws {
+        _ = try stock("Fresh")
+        _ = try stock("NoExpiry", daysLeft: nil)
+        _ = try stock("Empty", level: .empty)
+        _ = try stock("Expired", daysLeft: -1)
+        let usedUp = try stock("UsedUp")
+        (usedUp?.batches as? Set<Batch>)?.forEach(context.delete)
+
+        let names = try Shopping.suggestions(in: context).compactMap(\.name)
+        #expect(names == ["Empty", "Expired", "UsedUp"])
+    }
+
+    @Test func typedEntryLinksItemAndHidesSuggestion() throws {
+        _ = try stock("Milk", level: .empty)
+        try Shopping.add(" milk ", in: context)
+        #expect(try Shopping.suggestions(in: context).isEmpty)
+    }
+}
+
+@MainActor
 struct LocationTests {
     let context = Persistence(inMemory: true).container.viewContext
 
