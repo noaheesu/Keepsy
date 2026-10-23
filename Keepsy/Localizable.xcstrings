@@ -14,6 +14,150 @@
     "%@ · %@ · %@": {
       "shouldTranslate": false
     },
+    "%@, %lld items": {
+      "localizations": {
+        "en": {
+          "variations": {
+            "plural": {
+              "one": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "%1$@, %2$lld item"
+                }
+              },
+              "other": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "%1$@, %2$lld items"
+                }
+              }
+            }
+          }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%1$@, 물건 %2$lld개"
+          }
+        }
+      }
+    },
+    "%lld items": {
+      "localizations": {
+        "en": {
+          "variations": {
+            "plural": {
+              "one": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "%lld item"
+                }
+              },
+              "other": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "%lld items"
+                }
+              }
+            }
+          }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "물건 %lld개"
+          }
+        }
+      }
+    },
+    "%lld past date": {
+      "localizations": {
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "기한 지난 물건 %lld개"
+          }
+        }
+      }
+    },
+    "%lld to use this week": {
+      "localizations": {
+        "en": {
+          "variations": {
+            "plural": {
+              "one": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "%lld thing to use this week"
+                }
+              },
+              "other": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "%lld things to use this week"
+                }
+              }
+            }
+          }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "이번 주에 쓸 물건 %lld개"
+          }
+        }
+      }
+    },
+    "1 month": {
+      "localizations": {
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "1달"
+          }
+        }
+      }
+    },
+    "1 week": {
+      "localizations": {
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "1주"
+          }
+        }
+      }
+    },
+    "2 weeks": {
+      "localizations": {
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "2주"
+          }
+        }
+      }
+    },
+    "3 days": {
+      "localizations": {
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "3일"
+          }
+        }
+      }
+    },
+    "6 months": {
+      "localizations": {
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "6달"
+          }
+        }
+      }
+    },
     "Add": {
       "localizations": {
         "ko": {
@@ -54,12 +198,52 @@
         }
       }
     },
+    "Add what's in your fridge and cupboards to see what to use first.": {
+      "localizations": {
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "냉장고와 찬장에 있는 걸 등록하면 먼저 써야 할 것부터 보여드려요."
+          }
+        }
+      }
+    },
+    "All": {
+      "localizations": {
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "전체"
+          }
+        }
+      }
+    },
+    "Amount": {
+      "localizations": {
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "양"
+          }
+        }
+      }
+    },
     "Bought Again": {
       "localizations": {
         "ko": {
           "stringUnit": {
             "state": "translated",
             "value": "또 샀음"
+          }
+        }
+      }
+    },
+    "Bought before": {
+      "localizations": {
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "전에 산 물건"
           }
         }
       }
@@ -144,6 +328,16 @@
         }
       }
     },
+    "Expiration": {
+      "localizations": {
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "소비기한"
+          }
+        }
+      }
+    },
     "Expiration date": {
       "localizations": {
         "ko": {
@@ -180,6 +374,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "곧 기한이 끝나요"
+          }
+        }
+      }
+    },
+    "Filled in from last time. Check the date on the new package.": {
+      "localizations": {
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "지난번 정보로 채웠어요. 새 포장지의 날짜를 확인하세요."
           }
         }
       }
@@ -224,6 +428,16 @@
         }
       }
     },
+    "Is it at home?": {
+      "localizations": {
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "집에 있나?"
+          }
+        }
+      }
+    },
     "Items": {
       "localizations": {
         "ko": {
@@ -243,6 +457,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "부엌"
+          }
+        }
+      }
+    },
+    "Later": {
+      "localizations": {
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "넉넉해요"
           }
         }
       }
@@ -337,12 +561,32 @@
         }
       }
     },
+    "Nothing runs out this week": {
+      "localizations": {
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "이번 주에 끝나는 건 없어요"
+          }
+        }
+      }
+    },
     "One notification a day listing items that expire soon.": {
       "localizations": {
         "ko": {
           "stringUnit": {
             "state": "translated",
             "value": "기한이 얼마 남지 않은 물건을 하루 한 번 모아서 알려드려요."
+          }
+        }
+      }
+    },
+    "Past date": {
+      "localizations": {
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "기한 지남"
           }
         }
       }
@@ -377,12 +621,12 @@
         }
       }
     },
-    "Put Away": {
+    "Put Away (%lld)": {
       "localizations": {
         "ko": {
           "stringUnit": {
             "state": "translated",
-            "value": "집에 넣기"
+            "value": "집에 넣기 (%lld)"
           }
         }
       }
@@ -393,6 +637,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "수량: %lld"
+          }
+        }
+      }
+    },
+    "Ran out or past date. Buy again?": {
+      "localizations": {
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "다 썼거나 기한이 지났어요. 다시 살까요?"
           }
         }
       }
@@ -467,12 +721,22 @@
         }
       }
     },
-    "Suggestions": {
+    "Soonest %@": {
       "localizations": {
         "ko": {
           "stringUnit": {
             "state": "translated",
-            "value": "추천"
+            "value": "가장 급한 것 %@"
+          }
+        }
+      }
+    },
+    "This week": {
+      "localizations": {
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "이번 주"
           }
         }
       }
@@ -483,6 +747,26 @@
           "stringUnit": {
             "state": "translated",
             "value": "시간"
+          }
+        }
+      }
+    },
+    "Today or tomorrow": {
+      "localizations": {
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "오늘·내일"
+          }
+        }
+      }
+    },
+    "Type what you need above. Things you mark as used show up here as suggestions.": {
+      "localizations": {
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "필요한 걸 위에 입력하세요. 다 쓴 물건은 여기에 추천으로 나와요."
           }
         }
       }
@@ -503,6 +787,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "%lld일 이내"
+          }
+        }
+      }
+    },
+    "Your list is empty": {
+      "localizations": {
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "목록이 비어 있어요"
           }
         }
       }

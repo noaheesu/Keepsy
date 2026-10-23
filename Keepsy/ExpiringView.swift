@@ -1,144 +1,209 @@
 import SwiftUI
 
 struct ExpiringView: View {
-    @FetchRequest(sortDescriptors: [SortDescriptor(\Batch.expiresAt)], predicate: Self.predicate(dated: true, query: ""))
+    @FetchRequest(sortDescriptors: [SortDescriptor(\Batch.expiresAt)], predicate: Self.predicate(dated: true, query: "", place: nil))
     private var datedBatches: FetchedResults<Batch>
-    @FetchRequest(sortDescriptors: [SortDescriptor(\Batch.addedAt, order: .reverse)], predicate: Self.predicate(dated: false, query: ""))
+    @FetchRequest(sortDescriptors: [SortDescriptor(\Batch.addedAt, order: .reverse)], predicate: Self.predicate(dated: false, query: "", place: nil))
     private var undatedBatches: FetchedResults<Batch>
+    @FetchRequest(sortDescriptors: [SortDescriptor(\Location.sortOrder)])
+    private var locations: FetchedResults<Location>
     @State private var query = ""
-    @State private var editing: Batch?
-    @State private var adding = false
+    @State private var place: Location?
+    @State private var target: EditorTarget?
     @State private var showingSettings = false
 
     var body: some View {
+        let groups = Dictionary(grouping: datedBatches) { Expiry.Urgency(daysLeft: Expiry.daysLeft(until: $0.expiresAt ?? .now)) }
         NavigationStack {
             List {
                 Section {
-                    BatchRows(batches: datedBatches, editing: $editing)
+                    WeekSummary(dates: datedBatches.compactMap(\.expiresAt), overdue: groups[.overdue]?.count ?? 0)
+                        .listRowInsets(EdgeInsets(top: 0, leading: 20, bottom: 8, trailing: 20))
+                        .listRowBackground(Color.clear)
+                        .listRowSeparator(.hidden)
+                    if locations.count > 1 {
+                        PlaceFilter(locations: Array(locations), selection: $place)
+                            .listRowInsets(EdgeInsets())
+                            .listRowBackground(Color.clear)
+                    }
+                }
+                ForEach(Expiry.Urgency.allCases, id: \.self) { urgency in
+                    if let batches = groups[urgency] {
+                        Section {
+                            BatchRows(batches: batches, target: $target)
+                        } header: {
+                            Text(urgency.title)
+                                .foregroundStyle(urgency.color)
+                        }
+                    }
                 }
                 if !undatedBatches.isEmpty {
                     Section("No expiration") {
-                        BatchRows(batches: undatedBatches, editing: $editing)
+                        BatchRows(batches: Array(undatedBatches), target: $target)
                     }
                 }
             }
             .overlay {
                 if datedBatches.isEmpty && undatedBatches.isEmpty {
-                    if query.isEmpty {
-                        ContentUnavailableView("No items yet", systemImage: "refrigerator")
-                    } else {
-                        ContentUnavailableView.search(text: query)
-                    }
+                    emptyState
                 }
             }
-            .searchable(text: $query)
-            .onChange(of: query) {
-                datedBatches.nsPredicate = Self.predicate(dated: true, query: query)
-                undatedBatches.nsPredicate = Self.predicate(dated: false, query: query)
-            }
             .navigationTitle("Keepsy")
+            .navigationBarTitleDisplayMode(.inline)
+            .searchable(text: $query, prompt: Text("Is it at home?"))
+            .onChange(of: query) { applyFilters() }
+            .onChange(of: place) { applyFilters() }
             .toolbar {
                 ToolbarItem(placement: .topBarLeading) {
                     Button("Settings", systemImage: "gearshape") { showingSettings = true }
                 }
                 ToolbarItem(placement: .primaryAction) {
-                    Button("Add Item", systemImage: "plus") { adding = true }
+                    Button("Add Item", systemImage: "plus") { target = .new(place) }
                 }
             }
             .sheet(isPresented: $showingSettings) {
                 SettingsView()
             }
-            .sheet(isPresented: $adding) {
-                BatchEditor(batch: nil)
-            }
-            .sheet(item: $editing) { batch in
-                BatchEditor(batch: batch)
+            .sheet(item: $target) { target in
+                BatchEditor(target: target)
             }
         }
     }
 
-    private static func predicate(dated: Bool, query: String) -> NSPredicate {
-        let expiry = NSPredicate(format: dated ? "expiresAt != nil" : "expiresAt == nil")
+    @ViewBuilder
+    private var emptyState: some View {
+        if !query.isEmpty {
+            ContentUnavailableView.search(text: query)
+        } else if place != nil {
+            ContentUnavailableView("Nothing here", systemImage: "tray")
+        } else {
+            ContentUnavailableView {
+                Label("No items yet", systemImage: "refrigerator")
+            } description: {
+                Text("Add what's in your fridge and cupboards to see what to use first.")
+            } actions: {
+                Button("Add Item") { target = .new(nil) }
+                    .buttonStyle(.borderedProminent)
+            }
+        }
+    }
+
+    private func applyFilters() {
+        datedBatches.nsPredicate = Self.predicate(dated: true, query: query, place: place)
+        undatedBatches.nsPredicate = Self.predicate(dated: false, query: query, place: place)
+    }
+
+    private static func predicate(dated: Bool, query: String, place: Location?) -> NSPredicate {
+        var parts = [NSPredicate(format: dated ? "expiresAt != nil" : "expiresAt == nil")]
         let trimmed = query.trimmingCharacters(in: .whitespaces)
-        guard !trimmed.isEmpty else { return expiry }
-        return NSCompoundPredicate(andPredicateWithSubpredicates: [expiry, NSPredicate(format: "item.name CONTAINS[cd] %@", trimmed)])
-    }
-}
-
-/// Tappable batch rows with quick "used one" / "bought again" swipes; the owning list presents the editor for `editing`.
-struct BatchRows: View {
-    let batches: FetchedResults<Batch>
-    @Binding var editing: Batch?
-    @Environment(\.managedObjectContext) private var context
-
-    var body: some View {
-        ForEach(batches) { batch in
-            Button { editing = batch } label: {
-                BatchRow(batch: batch)
-            }
-            .tint(.primary)
-            .swipeActions(edge: .trailing) {
-                Button("Used", systemImage: "checkmark") {
-                    batch.useOne()
-                    try? context.save()
-                }
-                .tint(.green)
-            }
-            .swipeActions(edge: .leading) {
-                if let item = batch.item {
-                    Button("Bought Again", systemImage: "arrow.clockwise") {
-                        _ = try? item.restock(in: context)
-                    }
-                    .tint(.blue)
-                }
-            }
+        if !trimmed.isEmpty {
+            parts.append(NSPredicate(format: "item.name CONTAINS[cd] %@", trimmed))
         }
+        if let place {
+            // Locations are at most three levels deep, so this covers every descendant.
+            parts.append(NSPredicate(format: "location == %@ OR location.parent == %@ OR location.parent.parent == %@", place, place, place))
+        }
+        return NSCompoundPredicate(andPredicateWithSubpredicates: parts)
     }
 }
 
-struct BatchRow: View {
-    @ObservedObject var batch: Batch
-    @ScaledMetric private var thumbnailSide = 36.0
+/// Today's date, how much needs using this week, and a seven-day strip of what runs out when.
+private struct WeekSummary: View {
+    let dates: [Date]
+    let overdue: Int
 
     var body: some View {
-        HStack {
-            // shortcut: decodes the (already downscaled) photo on every render, cache if scrolling gets janky.
-            if let data = batch.item?.photo, let image = UIImage(data: data) {
-                Image(uiImage: image)
-                    .resizable()
-                    .scaledToFill()
-                    .frame(width: thumbnailSide, height: thumbnailSide)
-                    .clipShape(.rect(cornerRadius: 6))
-                    .accessibilityHidden(true)
-            }
-            VStack(alignment: .leading) {
-                HStack(spacing: 4) {
-                    Text(batch.item?.name ?? "")
-                    if batch.quantity > 1 {
-                        Text(verbatim: "×\(batch.quantity)")
-                            .foregroundStyle(.secondary)
-                    }
-                }
-                detail
-                    .font(.caption)
+        let counts = Expiry.dueCounts(dates)
+        let dueThisWeek = counts.reduce(0, +)
+        VStack(alignment: .leading, spacing: 12) {
+            VStack(alignment: .leading, spacing: 2) {
+                Text(Date.now, format: .dateTime.weekday(.wide).month(.wide).day())
+                    .font(.subheadline)
                     .foregroundStyle(.secondary)
+                Group {
+                    if dueThisWeek == 0 {
+                        Text("Nothing runs out this week")
+                    } else {
+                        Text("\(dueThisWeek) to use this week")
+                    }
+                }
+                .font(.stamp(.title2))
+                if overdue > 0 {
+                    Text("\(overdue) past date")
+                        .font(.subheadline.weight(.semibold))
+                        .foregroundStyle(Color.overdue)
+                }
             }
-            Spacer()
-            if let expiresAt = batch.expiresAt {
-                let days = Expiry.daysLeft(until: expiresAt)
-                Text(Expiry.label(daysLeft: days))
-                    .font(.headline.monospacedDigit())
-                    .foregroundStyle(Expiry.color(daysLeft: days))
+            HStack(spacing: 0) {
+                ForEach(counts.indices, id: \.self) { offset in
+                    DayColumn(offset: offset, count: counts[offset])
+                        .frame(maxWidth: .infinity)
+                }
             }
+        }
+        .padding(.top, 4)
+    }
+}
+
+private struct DayColumn: View {
+    let offset: Int
+    let count: Int
+
+    var body: some View {
+        let day = Calendar.current.date(byAdding: .day, value: offset, to: .now) ?? .now
+        let isToday = offset == 0
+        VStack(spacing: 4) {
+            Text(day, format: .dateTime.weekday(.narrow))
+                .font(.caption2)
+                .foregroundStyle(isToday ? Color(.systemBackground) : .secondary)
+            Text(verbatim: "\(Calendar.current.component(.day, from: day))")
+                .font(.stamp(.subheadline))
+                .foregroundStyle(isToday ? Color(.systemBackground) : .primary)
+            HStack(spacing: 2) {
+                ForEach(0..<min(count, 3), id: \.self) { _ in
+                    Circle().frame(width: 5, height: 5)
+                }
+            }
+            .frame(height: 5)
+            .foregroundStyle(isToday ? Color(.systemBackground) : Expiry.color(daysLeft: offset))
+        }
+        .padding(.vertical, 8)
+        .frame(maxWidth: .infinity)
+        .background(isToday ? Color.accentColor : Color.clear, in: .capsule)
+        .accessibilityElement(children: .ignore)
+        .accessibilityLabel(Text("\(day.formatted(.dateTime.weekday(.wide).day())), \(count) items"))
+    }
+}
+
+/// Horizontal chips to narrow the list to one place and everything inside it.
+private struct PlaceFilter: View {
+    let locations: [Location]
+    @Binding var selection: Location?
+
+    var body: some View {
+        ScrollView(.horizontal, showsIndicators: false) {
+            HStack(spacing: 8) {
+                chip(Text("All"), isOn: selection == nil) { selection = nil }
+                ForEach(locations.sorted { $0.treeOrder.lexicographicallyPrecedes($1.treeOrder) }) { location in
+                    chip(Text(location.name ?? ""), isOn: selection == location) { selection = location }
+                }
+            }
+            .padding(.horizontal, 20)
+            .padding(.vertical, 4)
         }
     }
 
-    private var detail: Text {
-        let location = Text(batch.location?.path ?? "")
-        guard let level = Level(rawValue: batch.level), level != .full, let updated = batch.levelUpdatedAt else {
-            return location
+    private func chip(_ title: Text, isOn: Bool, action: @escaping () -> Void) -> some View {
+        Button(action: action) {
+            title
+                .font(.subheadline.weight(.medium))
+                .padding(.horizontal, 14)
+                .padding(.vertical, 7)
+                .foregroundStyle(isOn ? Color(.systemBackground) : .primary)
+                .background(isOn ? Color.accentColor : Color(.secondarySystemFill), in: .capsule)
         }
-        return Text("\(location) · \(Text(level.title)) · \(Text(updated, format: .relative(presentation: .named)))")
+        .buttonStyle(.plain)
+        .accessibilityAddTraits(isOn ? .isSelected : [])
     }
 }
 

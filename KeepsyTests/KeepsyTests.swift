@@ -16,6 +16,22 @@ struct ExpiryTests {
         #expect(Expiry.daysLeft(until: date(21, 12), from: date(23, 8), calendar: calendar) == -2)
     }
 
+    @Test func remainingShareIsClamped() {
+        #expect(Expiry.remaining(addedAt: date(20, 0), expiresAt: date(30, 0), now: date(25, 0)) == 0.5)
+        #expect(Expiry.remaining(addedAt: date(20, 0), expiresAt: date(30, 0), now: date(31, 0)) == 0)
+        #expect(Expiry.remaining(addedAt: date(20, 0), expiresAt: date(20, 0), now: date(20, 0)) == 0)
+    }
+
+    @Test func dueCountsBucketByDayAndUrgencyBoundaries() {
+        let now = date(23, 8)
+        let counts = Expiry.dueCounts([date(23, 20), date(24, 1), date(24, 9), date(30, 0), date(22, 0)], from: now, calendar: calendar)
+        #expect(counts == [1, 2, 0, 0, 0, 0, 0])
+        #expect(Expiry.Urgency(daysLeft: -1) == .overdue)
+        #expect(Expiry.Urgency(daysLeft: 1) == .imminent)
+        #expect(Expiry.Urgency(daysLeft: 7) == .thisWeek)
+        #expect(Expiry.Urgency(daysLeft: 8) == .later)
+    }
+
     @Test func labels() {
         #expect(Expiry.label(daysLeft: 0) == "D-Day")
         #expect(Expiry.label(daysLeft: 3) == "D-3")

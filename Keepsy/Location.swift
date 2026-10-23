@@ -14,6 +14,11 @@ extension Location {
     /// Sort key that lists the tree depth-first: Kitchen, Kitchen › Fridge, Kitchen › Freezer, Bathroom…
     var treeOrder: [Int16] { (parent?.treeOrder ?? []) + [sortOrder] }
 
+    /// Batches here and in every sub-location.
+    var allBatches: [Batch] {
+        ((batches as? Set<Batch>) ?? []).map { $0 } + ((children as? Set<Location>) ?? []).flatMap(\.allBatches)
+    }
+
     @discardableResult
     static func make(_ name: String, parent: Location?, in context: NSManagedObjectContext) -> Location {
         let siblings = Location.fetchRequest()

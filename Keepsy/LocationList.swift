@@ -8,8 +8,7 @@ struct LocationList: View {
     @Environment(\.managedObjectContext) private var context
     @FetchRequest private var children: FetchedResults<Location>
     @FetchRequest private var batches: FetchedResults<Batch>
-    @State private var editing: Batch?
-    @State private var addingItem = false
+    @State private var target: EditorTarget?
     @State private var naming = false
     @State private var renaming: Location?
     @State private var nameDraft = ""
@@ -31,7 +30,9 @@ struct LocationList: View {
             if !children.isEmpty {
                 Section {
                     ForEach(children) { child in
-                        NavigationLink(child.name ?? "", value: child)
+                        NavigationLink(value: child) {
+                            LocationRow(location: child)
+                        }
                             .swipeActions {
                                 Button("Delete", role: .destructive) {
                                     child.deleteMovingContents()
@@ -45,7 +46,7 @@ struct LocationList: View {
             }
             if !batches.isEmpty {
                 Section(parent == nil ? "No location" : "Items") {
-                    BatchRows(batches: batches, editing: $editing)
+                    BatchRows(batches: Array(batches), target: $target)
                 }
             }
         }
@@ -61,18 +62,15 @@ struct LocationList: View {
                     EditButton()
                 }
                 Menu("Add", systemImage: "plus") {
-                    Button("Add Item", systemImage: "cart.badge.plus") { addingItem = true }
+                    Button("Add Item", systemImage: "cart.badge.plus") { target = .new(parent) }
                     if parent?.canHaveChildren ?? true {
                         Button("Add Location", systemImage: "folder.badge.plus") { startNaming(nil) }
                     }
                 }
             }
         }
-        .sheet(isPresented: $addingItem) {
-            BatchEditor(batch: nil, location: parent)
-        }
-        .sheet(item: $editing) { batch in
-            BatchEditor(batch: batch)
+        .sheet(item: $target) { target in
+            BatchEditor(target: target)
         }
         .alert(renaming == nil ? "Add Location" : "Rename", isPresented: $naming) {
             TextField("Name", text: $nameDraft)
@@ -105,6 +103,38 @@ struct LocationList: View {
             location.sortOrder = Int16(index)
         }
         try? context.save()
+    }
+}
+
+private struct LocationRow: View {
+    @ObservedObject var location: Location
+
+    var body: some View {
+        let batches = location.allBatches
+        let soonest = batches.compactMap(\.expiresAt).min()
+        HStack(spacing: 12) {
+            Image(systemName: location.children?.count ?? 0 > 0 ? "square.stack.3d.up" : "shippingbox")
+                .font(.title3)
+                .foregroundStyle(Color.accentColor)
+                .frame(width: 32)
+                .accessibilityHidden(true)
+            VStack(alignment: .leading, spacing: 2) {
+                Text(location.name ?? "")
+                    .font(.body.weight(.semibold))
+                Text("\(batches.count) items")
+                    .font(.caption)
+                    .foregroundStyle(.secondary)
+            }
+            Spacer()
+            if let soonest {
+                let days = Expiry.daysLeft(until: soonest)
+                Text(Expiry.label(daysLeft: days))
+                    .font(.stamp(.subheadline))
+                    .foregroundStyle(Expiry.color(daysLeft: days))
+                    .accessibilityLabel(Text("Soonest \(Expiry.label(daysLeft: days))"))
+            }
+        }
+        .padding(.vertical, 4)
     }
 }
 

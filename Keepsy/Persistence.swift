@@ -2,13 +2,18 @@ import CoreData
 
 @MainActor
 struct Persistence {
+    #if DEBUG
+    // Launch with -sampleData to see a populated app in the simulator.
+    static let shared = CommandLine.arguments.contains("-sampleData") ? preview : Persistence()
+    #else
     static let shared = Persistence()
+    #endif
 
     static let preview: Persistence = {
         let persistence = Persistence(inMemory: true)
         let context = persistence.container.viewContext
         let fridge = try? context.fetch(Location.fetchRequest()).first { $0.name == String(localized: "Fridge") }
-        for (name, days) in [("Milk", -1), ("Tofu", 0), ("Eggs", 5), ("Kimchi", 30)] {
+        for (name, days, level) in [("Milk", -1, Level.half), ("Tofu", 0, .full), ("Spinach", 1, .low), ("Eggs", 3, .half), ("Yogurt", 5, .full), ("Kimchi", 30, .full)] {
             let item = Item(context: context)
             item.id = UUID()
             item.name = name
@@ -16,8 +21,10 @@ struct Persistence {
             let batch = Batch(context: context)
             batch.location = fridge
             batch.id = UUID()
-            batch.addedAt = .now
+            batch.addedAt = Calendar.current.date(byAdding: .day, value: -7, to: .now)
             batch.expiresAt = Calendar.current.date(byAdding: .day, value: days, to: .now)
+            batch.level = level.rawValue
+            batch.levelUpdatedAt = Calendar.current.date(byAdding: .day, value: -2, to: .now)
             batch.item = item
         }
         try? context.save()
