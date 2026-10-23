@@ -21,11 +21,7 @@ enum Reminders {
         let minutes = defaults.object(forKey: minutesKey) as? Int ?? defaultMinutes
         let days = defaults.object(forKey: daysKey) as? Int ?? defaultDays
 
-        let request = Batch.fetchRequest()
-        request.predicate = NSPredicate(format: "expiresAt != nil AND level != %d", Level.empty.rawValue)
-        let entries = ((try? context.fetch(request)) ?? []).compactMap { batch in
-            batch.expiresAt.map { (name: batch.item?.name ?? "", expiresAt: $0) }
-        }
+        let entries = expiring(in: context)
 
         let calendar = Calendar.current
         let today = calendar.startOfDay(for: .now)
@@ -51,6 +47,15 @@ enum Reminders {
         guard !requests.isEmpty, (try? await center.requestAuthorization(options: [.alert, .sound])) == true else { return }
         for request in requests {
             try? await center.add(request)
+        }
+    }
+
+    /// Dated batches that still have something left.
+    static func expiring(in context: NSManagedObjectContext) -> [(name: String, expiresAt: Date)] {
+        let request = Batch.fetchRequest()
+        request.predicate = NSPredicate(format: "expiresAt != nil AND level != %d", Level.empty.rawValue)
+        return ((try? context.fetch(request)) ?? []).compactMap { batch in
+            batch.expiresAt.map { (name: batch.item?.name ?? "", expiresAt: $0) }
         }
     }
 

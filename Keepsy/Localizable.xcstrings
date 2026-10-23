@@ -833,6 +833,16 @@
         }
       }
     },
+    "Nothing to use up soon": {
+      "localizations": {
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "곧 써야 할 게 없어요"
+          }
+        }
+      }
+    },
     "Nothing used up yet": {
       "localizations": {
         "ko": {
@@ -1269,6 +1279,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "버린 비율"
+          }
+        }
+      }
+    },
+    "What to use first.": {
+      "localizations": {
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "먼저 써야 할 것을 보여줘요."
           }
         }
       }

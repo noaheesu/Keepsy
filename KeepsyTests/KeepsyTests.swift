@@ -267,6 +267,21 @@ struct ShoppingTests {
         #expect(stats.topWasted.map(\.name) == ["Bread", "Milk"])
     }
 
+    @Test func widgetSnapshotListsSoonestUsableBatches() throws {
+        _ = try stock("Later", daysLeft: 9)
+        _ = try stock("Soon", daysLeft: 1)
+        _ = try stock("Empty", level: .empty, daysLeft: 0)
+        _ = try stock("Undated", daysLeft: nil)
+
+        let snapshot = WidgetSnapshot(context: context)
+        #expect(snapshot.entries.map(\.name) == ["Soon", "Later"])
+
+        let defaults = try #require(UserDefaults(suiteName: "WidgetSnapshotTests"))
+        snapshot.save(to: defaults)
+        #expect(WidgetSnapshot.load(from: defaults).entries == snapshot.entries)
+        defaults.removePersistentDomain(forName: "WidgetSnapshotTests")
+    }
+
     @Test func putAwayFlagsGuessedDatesUntilEdited() throws {
         let milk = try #require(try stock("Milk", daysLeft: 10))
         (milk.batches as? Set<Batch>)?.forEach(context.delete)

@@ -19,6 +19,7 @@
 - 저장: Core Data(`Keepsy.xcdatamodeld`) + `NSPersistentCloudKitContainer`. 공유(가족) 때문에 SwiftData 대신 Core Data를 쓴다. CloudKit 개인 DB 동기화 켜짐(컨테이너 `iCloud.com.noahchoi.keepsy`, 팀 `4CAH5282L3`, `Keepsy.entitlements`). 테스트 호스트에서는 꺼짐(서명 없이 돌아서). 기기마다 만든 기본 장소는 동기화 후 `mergeDuplicateLocations`가 합친다.
 - 엔티티: `Location`(최대 3단계 트리, `isFreezer`), `Item`(이름·사진·마지막 장소·기한 간격 `shelfLifeDays`·구매 주기 `restockDays`), `Batch`(장소·기한·수량·잔량 4단계·`needsDateCheck`), `ShoppingEntry`, `UsageEvent`(다 씀/버림 기록).
 - 로직은 뷰 밖에 둔다: `BatchDraft`(저장/다시 추가), `Location`(트리, 삭제 시 내용물을 부모로), `Shopping`(추천·집에 넣기), `Reminders`(하루 1회 요약 알림, 14일치 미리 예약), `PackageDate`(포장지 날짜 OCR 파싱, 지역별 일/월 순서), `Expiry`(D-day, 긴급도).
+- 위젯 `KeepsyWidget/`: 동기화 저장소를 직접 열지 않고, 앱이 저장·활성화·동기화 때마다 App Group(`group.com.noahchoi.keepsy`) UserDefaults에 쓰는 `WidgetSnapshot`(이름·기한)만 읽는다. `Keepsy/`의 `Expiry.swift`·`WidgetSnapshot.swift`·`Assets.xcassets`·`Localizable.xcstrings`를 위젯 타깃에 같이 넣었다(pbxproj 예외 목록).
 - 화면: 탭 3개 [임박순 `ExpiringView` / 장소 `LocationList` / 장보기 `ShoppingView`], 공용 행 `BatchRows`, 편집 `BatchEditor`(`EditorTarget`: new/edit/restock), `SettingsView`, `OnboardingView`, `StoreErrorView`.
 - 디자인: 색은 Asset(AccentColor 바질, Overdue 토마토, Soon 마리골드, Fresh 세이지, 다크 모드 포함). D-day 숫자는 `Font.stamp`(heavy + expanded). 일러스트는 `design/illustrations/*.svg` → Asset 이미지(`Image(.fridge).illustration(height:)`), 아이콘 원본 `design/AppIcon.svg`(1024 PNG는 알파 없이 내보냄).
 - 문서: `docs/`는 GitHub Pages(https://noaheesu.github.io/Keepsy/privacy), `store/AppStore.md`는 스토어 문구 초안(한/영). 문의 창구는 dev.noahchoi@gmail.com(`AppLinks.support`, mailto). 스토어 Support URL은 Pages 첫 화면.
@@ -31,7 +32,7 @@
 - 하지 않기로 한 것: 바코드(나라별 DB 차이), 영수증 OCR, 레시피, 개봉일, 카테고리별 기본 기한, Siri.
 
 ## 남은 일
-- 가족 공유(CKShare) + "곧 만료" 위젯(App Group). 출시 전 CloudKit 대시보드에서 스키마를 Production에 배포.
+- 가족 공유(CKShare). 출시 전 CloudKit 대시보드에서 스키마를 Production에 배포.
 - 두 기기로 실제 동기화 확인 못 함.
 - 출시: 스크린샷, App Store Connect 등록, EU 판매자 여부(비판매자) 신고.
 - 확인 못 한 것: 실제 기기에서 날짜 스캔, 길게 누르기 메뉴·장보기·장소·설정 화면의 터치 동작.

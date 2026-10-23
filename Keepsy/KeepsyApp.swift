@@ -16,21 +16,23 @@ struct KeepsyApp: App {
             }
             .environment(\.managedObjectContext, persistence.container.viewContext)
             .onReceive(NotificationCenter.default.publisher(for: .NSManagedObjectContextDidSave, object: persistence.container.viewContext)) { _ in
-                rescheduleReminders()
+                refreshDigests()
             }
             // Posted off the main thread whenever a sync import lands.
             .onReceive(NotificationCenter.default.publisher(for: .NSPersistentStoreRemoteChange).receive(on: DispatchQueue.main)) { _ in
                 Persistence.mergeDuplicateLocations(in: persistence.container.viewContext)
+                WidgetSnapshot.refresh(from: persistence.container.viewContext)
             }
         }
         .onChange(of: scenePhase) {
             if scenePhase == .active {
-                rescheduleReminders()
+                refreshDigests()
             }
         }
     }
 
-    private func rescheduleReminders() {
+    private func refreshDigests() {
+        WidgetSnapshot.refresh(from: persistence.container.viewContext)
         Task { await Reminders.reschedule(in: persistence.container.viewContext) }
     }
 }
