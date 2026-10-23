@@ -5,15 +5,14 @@
         <attribute name="name" optional="YES" attributeType="String"/>
         <attribute name="sortOrder" optional="YES" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES"/>
         <relationship name="parent" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Location" inverseName="children" inverseEntity="Location"/>
-        <relationship name="children" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="Location" inverseName="parent" inverseEntity="Location"/>
-        <relationship name="items" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Item" inverseName="location" inverseEntity="Item"/>
+        <relationship name="children" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Location" inverseName="parent" inverseEntity="Location"/>
+        <relationship name="batches" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Batch" inverseName="location" inverseEntity="Batch"/>
     </entity>
     <entity name="Item" representedClassName="Item" syncable="YES" codeGenerationType="class">
         <attribute name="id" optional="YES" attributeType="UUID" usesScalarValueType="NO"/>
         <attribute name="name" optional="YES" attributeType="String"/>
         <attribute name="photo" optional="YES" attributeType="Binary" allowsExternalBinaryDataStorage="YES"/>
         <attribute name="createdAt" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
-        <relationship name="location" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Location" inverseName="items" inverseEntity="Location"/>
         <relationship name="batches" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="Batch" inverseName="item" inverseEntity="Batch"/>
         <relationship name="shoppingEntries" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="ShoppingEntry" inverseName="item" inverseEntity="ShoppingEntry"/>
     </entity>
@@ -25,6 +24,7 @@
         <attribute name="levelUpdatedAt" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
         <attribute name="addedAt" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
         <relationship name="item" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Item" inverseName="batches" inverseEntity="Item"/>
+        <relationship name="location" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Location" inverseName="batches" inverseEntity="Location"/>
     </entity>
     <entity name="ShoppingEntry" representedClassName="ShoppingEntry" syncable="YES" codeGenerationType="class">
         <attribute name="id" optional="YES" attributeType="UUID" usesScalarValueType="NO"/>

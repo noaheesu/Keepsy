@@ -71,6 +71,44 @@ struct BatchDraftTests {
 }
 
 @MainActor
+struct LocationTests {
+    let context = Persistence(inMemory: true).container.viewContext
+
+    @Test func deleteMovesContentsToParent() throws {
+        let room = Location.make("Room", parent: nil, in: context)
+        let shelf = Location.make("Shelf", parent: room, in: context)
+        let box = Location.make("Box", parent: shelf, in: context)
+        var draft = BatchDraft(location: shelf)
+        draft.name = "Soap"
+        let batch = try draft.save(to: nil, in: context)
+
+        shelf.deleteMovingContents()
+        try context.save()
+
+        #expect(batch.location == room)
+        #expect(box.parent == room)
+        #expect(try context.count(for: Batch.fetchRequest()) == 1)
+    }
+
+    @Test func depthIsCapped() {
+        let a = Location.make("A", parent: nil, in: context)
+        let b = Location.make("B", parent: a, in: context)
+        let c = Location.make("C", parent: b, in: context)
+        #expect(a.canHaveChildren && b.canHaveChildren)
+        #expect(!c.canHaveChildren)
+        #expect(c.path == "A › B › C")
+    }
+
+    @Test func newLocationGoesLastAmongSiblings() {
+        let a = Location.make("A", parent: nil, in: context)
+        let first = Location.make("X", parent: a, in: context)
+        let second = Location.make("Y", parent: a, in: context)
+        #expect(first.sortOrder == 0)
+        #expect(second.sortOrder == 1)
+    }
+}
+
+@MainActor
 struct PersistenceTests {
     @Test func seedsDefaultLocationsOnce() throws {
         let persistence = Persistence(inMemory: true)

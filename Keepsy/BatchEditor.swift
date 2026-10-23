@@ -12,9 +12,9 @@ struct BatchEditor: View {
     @State private var pickedPhoto: PhotosPickerItem?
     @State private var showSaveError = false
 
-    init(batch: Batch?) {
+    init(batch: Batch?, location: Location? = nil) {
         self.batch = batch
-        _draft = State(initialValue: batch.map(BatchDraft.init(batch:)) ?? BatchDraft())
+        _draft = State(initialValue: batch.map(BatchDraft.init(batch:)) ?? BatchDraft(location: location))
     }
 
     var body: some View {

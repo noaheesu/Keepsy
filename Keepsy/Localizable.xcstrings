@@ -1,137 +1,342 @@
 {
-  "sourceLanguage" : "en",
-  "strings" : {
-    "%@ · %@ · %@" : {
-      "shouldTranslate" : false
+  "sourceLanguage": "en",
+  "strings": {
+    "%@ · %@ · %@": {
+      "shouldTranslate": false
     },
-    "Add Item" : {
-      "localizations" : {
-        "ko" : { "stringUnit" : { "state" : "translated", "value" : "물건 추가" } }
+    "Add": {
+      "localizations": {
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "추가"
+          }
+        }
       }
     },
-    "Cancel" : {
-      "localizations" : {
-        "ko" : { "stringUnit" : { "state" : "translated", "value" : "취소" } }
+    "Add Item": {
+      "localizations": {
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "물건 추가"
+          }
+        }
       }
     },
-    "Choose Photo" : {
-      "localizations" : {
-        "ko" : { "stringUnit" : { "state" : "translated", "value" : "사진 선택" } }
+    "Add Location": {
+      "localizations": {
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "장소 추가"
+          }
+        }
       }
     },
-    "Couldn't save" : {
-      "localizations" : {
-        "ko" : { "stringUnit" : { "state" : "translated", "value" : "저장하지 못했어요" } }
+    "Cancel": {
+      "localizations": {
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "취소"
+          }
+        }
       }
     },
-    "Delete" : {
-      "localizations" : {
-        "ko" : { "stringUnit" : { "state" : "translated", "value" : "삭제" } }
+    "Choose Photo": {
+      "localizations": {
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "사진 선택"
+          }
+        }
       }
     },
-    "Edit Item" : {
-      "localizations" : {
-        "ko" : { "stringUnit" : { "state" : "translated", "value" : "물건 수정" } }
+    "Couldn't save": {
+      "localizations": {
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "저장하지 못했어요"
+          }
+        }
       }
     },
-    "Empty" : {
-      "localizations" : {
-        "ko" : { "stringUnit" : { "state" : "translated", "value" : "없음" } }
+    "Delete": {
+      "localizations": {
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "삭제"
+          }
+        }
       }
     },
-    "Expiration date" : {
-      "localizations" : {
-        "ko" : { "stringUnit" : { "state" : "translated", "value" : "소비기한" } }
+    "Edit Item": {
+      "localizations": {
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "물건 수정"
+          }
+        }
       }
     },
-    "Expires" : {
-      "localizations" : {
-        "ko" : { "stringUnit" : { "state" : "translated", "value" : "기한 있음" } }
+    "Empty": {
+      "localizations": {
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "없음"
+          }
+        }
       }
     },
-    "Freezer" : {
-      "localizations" : {
-        "ko" : { "stringUnit" : { "state" : "translated", "value" : "냉동" } }
+    "Expiration date": {
+      "localizations": {
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "소비기한"
+          }
+        }
       }
     },
-    "Fridge" : {
-      "localizations" : {
-        "ko" : { "stringUnit" : { "state" : "translated", "value" : "냉장" } }
+    "Expires": {
+      "localizations": {
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "기한 있음"
+          }
+        }
       }
     },
-    "Full" : {
-      "localizations" : {
-        "ko" : { "stringUnit" : { "state" : "translated", "value" : "가득" } }
+    "Expiring": {
+      "localizations": {
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "임박순"
+          }
+        }
       }
     },
-    "Half" : {
-      "localizations" : {
-        "ko" : { "stringUnit" : { "state" : "translated", "value" : "반" } }
+    "Freezer": {
+      "localizations": {
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "냉동"
+          }
+        }
       }
     },
-    "Keepsy" : {
-      "shouldTranslate" : false
-    },
-    "Kitchen" : {
-      "localizations" : {
-        "ko" : { "stringUnit" : { "state" : "translated", "value" : "부엌" } }
+    "Fridge": {
+      "localizations": {
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "냉장"
+          }
+        }
       }
     },
-    "Location" : {
-      "localizations" : {
-        "ko" : { "stringUnit" : { "state" : "translated", "value" : "장소" } }
+    "Full": {
+      "localizations": {
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "가득"
+          }
+        }
       }
     },
-    "Low" : {
-      "localizations" : {
-        "ko" : { "stringUnit" : { "state" : "translated", "value" : "조금" } }
+    "Half": {
+      "localizations": {
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "반"
+          }
+        }
       }
     },
-    "Name" : {
-      "localizations" : {
-        "ko" : { "stringUnit" : { "state" : "translated", "value" : "이름" } }
+    "Items": {
+      "localizations": {
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "물건"
+          }
+        }
       }
     },
-    "No expiration" : {
-      "localizations" : {
-        "ko" : { "stringUnit" : { "state" : "translated", "value" : "기한 없음" } }
+    "Keepsy": {
+      "shouldTranslate": false
+    },
+    "Kitchen": {
+      "localizations": {
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "부엌"
+          }
+        }
       }
     },
-    "No items yet" : {
-      "localizations" : {
-        "ko" : { "stringUnit" : { "state" : "translated", "value" : "아직 등록된 물건이 없어요" } }
+    "Location": {
+      "localizations": {
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "장소"
+          }
+        }
       }
     },
-    "None" : {
-      "localizations" : {
-        "ko" : { "stringUnit" : { "state" : "translated", "value" : "없음" } }
+    "Locations": {
+      "localizations": {
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "장소"
+          }
+        }
       }
     },
-    "Photo" : {
-      "localizations" : {
-        "ko" : { "stringUnit" : { "state" : "translated", "value" : "사진" } }
+    "Low": {
+      "localizations": {
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "조금"
+          }
+        }
       }
     },
-    "Quantity: %lld" : {
-      "localizations" : {
-        "ko" : { "stringUnit" : { "state" : "translated", "value" : "수량: %lld" } }
+    "Name": {
+      "localizations": {
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "이름"
+          }
+        }
       }
     },
-    "Remaining" : {
-      "localizations" : {
-        "ko" : { "stringUnit" : { "state" : "translated", "value" : "남은 양" } }
+    "No expiration": {
+      "localizations": {
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "기한 없음"
+          }
+        }
       }
     },
-    "Remove Photo" : {
-      "localizations" : {
-        "ko" : { "stringUnit" : { "state" : "translated", "value" : "사진 삭제" } }
+    "No items yet": {
+      "localizations": {
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "아직 등록된 물건이 없어요"
+          }
+        }
       }
     },
-    "Save" : {
-      "localizations" : {
-        "ko" : { "stringUnit" : { "state" : "translated", "value" : "저장" } }
+    "No location": {
+      "localizations": {
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "장소 없음"
+          }
+        }
+      }
+    },
+    "None": {
+      "localizations": {
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "없음"
+          }
+        }
+      }
+    },
+    "Nothing here": {
+      "localizations": {
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "비어 있어요"
+          }
+        }
+      }
+    },
+    "Photo": {
+      "localizations": {
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "사진"
+          }
+        }
+      }
+    },
+    "Quantity: %lld": {
+      "localizations": {
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "수량: %lld"
+          }
+        }
+      }
+    },
+    "Remaining": {
+      "localizations": {
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "남은 양"
+          }
+        }
+      }
+    },
+    "Remove Photo": {
+      "localizations": {
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "사진 삭제"
+          }
+        }
+      }
+    },
+    "Rename": {
+      "localizations": {
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "이름 변경"
+          }
+        }
+      }
+    },
+    "Save": {
+      "localizations": {
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "저장"
+          }
+        }
       }
     }
   },
-  "version" : "1.0"
+  "version": "1.0"
 }

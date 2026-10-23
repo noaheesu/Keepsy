@@ -16,12 +16,6 @@ enum Level: Int16, CaseIterable, Identifiable {
     }
 }
 
-extension Location {
-    var path: String {
-        [parent?.path, name].compactMap { $0 }.joined(separator: " › ")
-    }
-}
-
 /// Editable copy of a batch and its item, written back to Core Data only on save.
 struct BatchDraft {
     var name = ""
@@ -32,11 +26,13 @@ struct BatchDraft {
     var level = Level.full
     var photo: Data?
 
-    init() {}
+    init(location: Location? = nil) {
+        self.location = location
+    }
 
     init(batch: Batch) {
         name = batch.item?.name ?? ""
-        location = batch.item?.location
+        location = batch.location
         hasExpiry = batch.expiresAt != nil
         expiresAt = batch.expiresAt ?? .now
         quantity = Int(batch.quantity)
@@ -58,11 +54,11 @@ struct BatchDraft {
         // A new batch with a known name joins that item, so its history stays in one place.
         let item = try batch.item ?? existingItem(in: context) ?? newItem(in: context)
         item.name = trimmedName
-        item.location = location
         if existing != nil || photo != nil {
             item.photo = photo
         }
         batch.item = item
+        batch.location = location
         batch.expiresAt = hasExpiry ? expiresAt : nil
         batch.quantity = Int16(quantity)
         if existing == nil || batch.level != level.rawValue {

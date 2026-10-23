@@ -13,8 +13,8 @@ struct Persistence {
             item.id = UUID()
             item.name = name
             item.createdAt = .now
-            item.location = fridge
             let batch = Batch(context: context)
+            batch.location = fridge
             batch.id = UUID()
             batch.addedAt = .now
             batch.expiresAt = Calendar.current.date(byAdding: .day, value: days, to: .now)
@@ -50,18 +50,9 @@ struct Persistence {
     private func seedDefaultLocations() {
         let context = container.viewContext
         guard (try? context.count(for: Location.fetchRequest())) == 0 else { return }
-        let kitchen = makeLocation(String(localized: "Kitchen"), parent: nil, order: 0)
-        _ = makeLocation(String(localized: "Fridge"), parent: kitchen, order: 0)
-        _ = makeLocation(String(localized: "Freezer"), parent: kitchen, order: 1)
+        let kitchen = Location.make(String(localized: "Kitchen"), parent: nil, in: context)
+        Location.make(String(localized: "Fridge"), parent: kitchen, in: context)
+        Location.make(String(localized: "Freezer"), parent: kitchen, in: context)
         try? context.save()
-    }
-
-    private func makeLocation(_ name: String, parent: Location?, order: Int16) -> Location {
-        let location = Location(context: container.viewContext)
-        location.id = UUID()
-        location.name = name
-        location.parent = parent
-        location.sortOrder = order
-        return location
     }
 }
