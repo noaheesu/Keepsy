@@ -68,6 +68,6 @@ No account, no ads, no tracking. Your items stay on your iPhone.
 
 - Age rating: 4+.
 - App Privacy: Data Not Collected.
-- Privacy Policy URL: https://noaheesu.github.io/home_stock/privacy
-- Support URL: https://github.com/noaheesu/home_stock/issues
+- Privacy Policy URL: https://noaheesu.github.io/Keepsy/privacy
+- Support URL: https://github.com/noaheesu/Keepsy/issues
 - Export compliance: no non-exempt encryption (ITSAppUsesNonExemptEncryption = NO).

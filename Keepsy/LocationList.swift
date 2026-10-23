@@ -143,6 +143,8 @@ private struct LocationRow: View {
                 let days = Expiry.daysLeft(until: soonest)
                 Text(Expiry.label(daysLeft: days))
                     .font(.stamp(.subheadline))
+                    .lineLimit(1)
+                    .minimumScaleFactor(0.6)
                     .foregroundStyle(Expiry.color(daysLeft: days))
                     .accessibilityLabel(Text("Soonest \(Expiry.label(daysLeft: days))"))
             }

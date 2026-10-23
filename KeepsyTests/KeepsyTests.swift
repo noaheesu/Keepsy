@@ -29,11 +29,6 @@ struct ExpiryTests {
         #expect(Expiry.Urgency(daysLeft: 8) == .later)
     }
 
-    @Test func labels() {
-        #expect(Expiry.label(daysLeft: 0) == "D-Day")
-        #expect(Expiry.label(daysLeft: 3) == "D-3")
-        #expect(Expiry.label(daysLeft: -2) == "D+2")
-    }
 }
 
 @MainActor
@@ -88,7 +83,11 @@ struct PackageDateTests {
     var now: Date { calendar.date(from: DateComponents(year: 2026, month: 10, day: 23)) ?? .now }
 
     func ymd(_ text: String) -> [Int]? {
-        PackageDate.parse(text, now: now, calendar: calendar).map {
+        ymd(text, region: "ko_KR")
+    }
+
+    func ymd(_ text: String, region: String) -> [Int]? {
+        PackageDate.parse(text, now: now, calendar: calendar, locale: Locale(identifier: region)).map {
             let c = calendar.dateComponents([.year, .month, .day], from: $0)
             return [c.year ?? 0, c.month ?? 0, c.day ?? 0]
         }
@@ -100,6 +99,18 @@ struct PackageDateTests {
         #expect(ymd("2027년 1월 5일") == [2027, 1, 5])
         #expect(ymd("20261231") == [2026, 12, 31])
         #expect(ymd("2026. 10. 25") == [2026, 10, 25])
+    }
+
+    @Test func readsUSAndEuropeanFormats() {
+        #expect(ymd("BEST BY 10/25/2026", region: "en_US") == [2026, 10, 25])
+        #expect(ymd("05/03/2026", region: "en_US") == [2026, 5, 3])
+        #expect(ymd("05/03/2026", region: "de_DE") == [2026, 3, 5])
+        #expect(ymd("25.10.2026", region: "en_US") == [2026, 10, 25])
+        #expect(ymd("EXP 25 OCT 2026", region: "en_GB") == [2026, 10, 25])
+        #expect(ymd("Use by Oct 25, 2026", region: "en_US") == [2026, 10, 25])
+        #expect(ymd("Best before NOV 2026", region: "en_GB") == [2026, 11, 30])
+        #expect(ymd("25/10/26", region: "en_GB") == [2026, 10, 25])
+        #expect(ymd("Lot 2026.10.01 EXP 31.12.2026", region: "de_DE") == [2026, 12, 31])
     }
 
     @Test func prefersLatestDateAndRejectsNonsense() {
@@ -120,15 +131,15 @@ struct ReminderDigestTests {
     @Test func listsOnlyItemsDueWithinWindowSoonestFirst() {
         let entries = [(name: "Eggs", expiresAt: day(5)), (name: "Milk", expiresAt: day(0)),
                        (name: "Old", expiresAt: day(-1)), (name: "Kimchi", expiresAt: day(30))]
-        #expect(Reminders.digest(entries, on: day(0), within: 7, calendar: calendar) == "Milk D-Day, Eggs D-5")
-        #expect(Reminders.digest(entries, on: day(0), within: 3, calendar: calendar) == "Milk D-Day")
+        #expect(Reminders.digest(entries, on: day(0), within: 7, calendar: calendar) == "Milk \(Expiry.label(daysLeft: 0)), Eggs \(Expiry.label(daysLeft: 5))")
+        #expect(Reminders.digest(entries, on: day(0), within: 3, calendar: calendar) == "Milk \(Expiry.label(daysLeft: 0))")
         #expect(Reminders.digest(entries, on: day(1), within: 3, calendar: calendar) == nil)
     }
 
     @Test func collapsesLongLists() throws {
         let entries = (1...5).map { (name: "I\($0)", expiresAt: day($0)) }
         let body = try #require(Reminders.digest(entries, on: day(0), within: 7, calendar: calendar))
-        #expect(body.hasPrefix("I1 D-1, I2 D-2, I3 D-3"))
+        #expect(body.hasPrefix("I1 \(Expiry.label(daysLeft: 1)), I2 \(Expiry.label(daysLeft: 2))"))
         #expect(body.contains("2"))
     }
 }

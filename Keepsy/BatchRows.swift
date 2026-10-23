@@ -148,6 +148,8 @@ struct BatchRow: View {
                 Text(Expiry.label(daysLeft: days))
                     .font(.stamp(.title3))
                     .monospacedDigit()
+                    .lineLimit(1)
+                    .minimumScaleFactor(0.6)
                     .foregroundStyle(Expiry.color(daysLeft: days))
             }
         }

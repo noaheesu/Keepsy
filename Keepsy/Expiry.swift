@@ -8,11 +8,12 @@ enum Expiry {
         calendar.dateComponents([.day], from: calendar.startOfDay(for: now), to: calendar.startOfDay(for: date)).day ?? 0
     }
 
+    /// "D-3" in Korean, "3 days" in English: the D-day notation is only familiar in some places.
     static func label(daysLeft: Int) -> String {
         switch daysLeft {
-        case 0: "D-Day"
-        case 1...: "D-\(daysLeft)"
-        default: "D+\(-daysLeft)"
+        case 0: String(localized: "D-Day")
+        case 1...: String(localized: "D-\(daysLeft)")
+        default: String(localized: "D+\(-daysLeft)")
         }
     }
 
