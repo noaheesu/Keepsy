@@ -7,11 +7,17 @@ struct KeepsyApp: App {
 
     var body: some Scene {
         WindowGroup {
-            ContentView()
-                .environment(\.managedObjectContext, persistence.container.viewContext)
-                .onReceive(NotificationCenter.default.publisher(for: .NSManagedObjectContextDidSave, object: persistence.container.viewContext)) { _ in
-                    rescheduleReminders()
+            Group {
+                if persistence.isLoaded {
+                    ContentView()
+                } else {
+                    StoreErrorView()
                 }
+            }
+            .environment(\.managedObjectContext, persistence.container.viewContext)
+            .onReceive(NotificationCenter.default.publisher(for: .NSManagedObjectContextDidSave, object: persistence.container.viewContext)) { _ in
+                rescheduleReminders()
+            }
         }
         .onChange(of: scenePhase) {
             if scenePhase == .active {

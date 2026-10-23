@@ -44,18 +44,26 @@ struct Persistence {
         }
         // shortcut: CloudKit off until a paid developer account exists; set cloudKitContainerOptions to enable sync/sharing.
         description?.cloudKitContainerOptions = nil
-        container.loadPersistentStores { _, error in
-            if let error {
-                fatalError("Failed to load store: \(error)")
-            }
-        }
+        // A failed load leaves no stores; the app shows StoreErrorView instead of crashing.
+        container.loadPersistentStores { _, _ in }
         container.viewContext.automaticallyMergesChangesFromParent = true
-        seedDefaultLocations()
+        Self.seedDefaultLocations(in: container.viewContext)
+    }
+
+    var isLoaded: Bool { !container.persistentStoreCoordinator.persistentStores.isEmpty }
+
+    /// Back to a fresh install: everything removed, default locations recreated. Settings are kept.
+    static func deleteAll(in context: NSManagedObjectContext) throws {
+        for entity in model.entities {
+            guard let name = entity.name else { continue }
+            try context.fetch(NSFetchRequest<NSManagedObject>(entityName: name)).forEach(context.delete)
+        }
+        try context.save()
+        seedDefaultLocations(in: context)
     }
 
     // shortcut: seeding per device will duplicate defaults once CloudKit sync is on, dedupe when enabling sync.
-    private func seedDefaultLocations() {
-        let context = container.viewContext
+    private static func seedDefaultLocations(in context: NSManagedObjectContext) {
         guard (try? context.count(for: Location.fetchRequest())) == 0 else { return }
         let kitchen = Location.make(String(localized: "Kitchen"), parent: nil, in: context)
         Location.make(String(localized: "Fridge"), parent: kitchen, in: context)

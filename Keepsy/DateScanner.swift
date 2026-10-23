@@ -1,3 +1,4 @@
+import AVFoundation
 import SwiftUI
 import VisionKit
 
@@ -23,7 +24,16 @@ enum PackageDate {
 
 /// Live camera text scanner that reports the first package date it reads.
 struct DateScanner: UIViewControllerRepresentable {
-    static var isAvailable: Bool { DataScannerViewController.isSupported && DataScannerViewController.isAvailable }
+    static var isSupported: Bool { DataScannerViewController.isSupported }
+
+    /// Asks for the camera the first time; false means access is off and the user must enable it in Settings.
+    static func requestAccess() async -> Bool {
+        switch AVCaptureDevice.authorizationStatus(for: .video) {
+        case .authorized: true
+        case .notDetermined: await AVCaptureDevice.requestAccess(for: .video)
+        default: false
+        }
+    }
 
     let onDate: (Date) -> Void
 

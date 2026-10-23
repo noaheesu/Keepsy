@@ -120,6 +120,16 @@
         }
       }
     },
+    "A nudge each morning": {
+      "localizations": {
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "매일 아침 한 번만"
+          }
+        }
+      }
+    },
     "Add": {
       "localizations": {
         "ko": {
@@ -220,6 +230,16 @@
         }
       }
     },
+    "Camera access is off": {
+      "localizations": {
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "카메라 접근이 꺼져 있어요"
+          }
+        }
+      }
+    },
     "Cancel": {
       "localizations": {
         "ko": {
@@ -250,6 +270,36 @@
         }
       }
     },
+    "Close Keepsy and open it again. If this keeps happening, let us know and we'll help.": {
+      "localizations": {
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Keepsy를 완전히 닫았다가 다시 열어주세요. 계속 이러면 알려주세요. 도와드릴게요."
+          }
+        }
+      }
+    },
+    "Contact Support": {
+      "localizations": {
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "문의하기"
+          }
+        }
+      }
+    },
+    "Couldn't delete your data. Try again.": {
+      "localizations": {
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "데이터를 삭제하지 못했어요. 다시 시도해 주세요."
+          }
+        }
+      }
+    },
     "Couldn't save": {
       "localizations": {
         "ko": {
@@ -276,6 +326,26 @@
           "stringUnit": {
             "state": "translated",
             "value": "삭제"
+          }
+        }
+      }
+    },
+    "Delete All Data": {
+      "localizations": {
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "모든 데이터 삭제"
+          }
+        }
+      }
+    },
+    "Delete all items, places and shopping lists?": {
+      "localizations": {
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "모든 물건, 장소, 장보기 목록을 삭제할까요?"
           }
         }
       }
@@ -458,12 +528,32 @@
         }
       }
     },
+    "Get one notification a day with what runs out soon. Pick a time; you can change it later in Settings.": {
+      "localizations": {
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "곧 기한이 끝나는 것만 하루 한 번 알려드려요. 시간을 고르세요. 나중에 설정에서 바꿀 수 있어요."
+          }
+        }
+      }
+    },
     "Half": {
       "localizations": {
         "ko": {
           "stringUnit": {
             "state": "translated",
             "value": "반"
+          }
+        }
+      }
+    },
+    "Hold for more": {
+      "localizations": {
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "길게 누르면 더 있어요"
           }
         }
       }
@@ -491,12 +581,32 @@
     "Keepsy": {
       "shouldTranslate": false
     },
+    "Keepsy can't open your items": {
+      "localizations": {
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Keepsy가 저장된 물건을 열 수 없어요"
+          }
+        }
+      }
+    },
     "Kitchen": {
       "localizations": {
         "ko": {
           "stringUnit": {
             "state": "translated",
             "value": "부엌"
+          }
+        }
+      }
+    },
+    "Language and Permissions": {
+      "localizations": {
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "언어 및 권한"
           }
         }
       }
@@ -541,12 +651,32 @@
         }
       }
     },
+    "Milk": {
+      "localizations": {
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "우유"
+          }
+        }
+      }
+    },
     "Name": {
       "localizations": {
         "ko": {
           "stringUnit": {
             "state": "translated",
             "value": "이름"
+          }
+        }
+      }
+    },
+    "Next": {
+      "localizations": {
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "다음"
           }
         }
       }
@@ -591,6 +721,16 @@
         }
       }
     },
+    "Not Now": {
+      "localizations": {
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "나중에"
+          }
+        }
+      }
+    },
     "Nothing here": {
       "localizations": {
         "ko": {
@@ -611,12 +751,32 @@
         }
       }
     },
+    "Notifications are off for Keepsy. Turn them on in Settings.": {
+      "localizations": {
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Keepsy 알림이 꺼져 있어요. 설정에서 켜주세요."
+          }
+        }
+      }
+    },
     "One notification a day listing items that expire soon.": {
       "localizations": {
         "ko": {
           "stringUnit": {
             "state": "translated",
             "value": "기한이 얼마 남지 않은 물건을 하루 한 번 모아서 알려드려요."
+          }
+        }
+      }
+    },
+    "Open Settings": {
+      "localizations": {
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "설정 열기"
           }
         }
       }
@@ -651,12 +811,32 @@
         }
       }
     },
+    "Point the camera at the package and Keepsy reads the expiration date for you.": {
+      "localizations": {
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "포장지에 카메라를 비추면 Keepsy가 소비기한을 읽어드려요."
+          }
+        }
+      }
+    },
     "Previously added": {
       "localizations": {
         "ko": {
           "stringUnit": {
             "state": "translated",
             "value": "이전에 추가한 물건"
+          }
+        }
+      }
+    },
+    "Privacy Policy": {
+      "localizations": {
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "개인정보처리방침"
           }
         }
       }
@@ -687,6 +867,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "다 떨어졌어요"
+          }
+        }
+      }
+    },
+    "Rate Keepsy": {
+      "localizations": {
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Keepsy 평가하기"
           }
         }
       }
@@ -741,6 +931,16 @@
         }
       }
     },
+    "Scan the date": {
+      "localizations": {
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "날짜는 스캔으로"
+          }
+        }
+      }
+    },
     "Settings": {
       "localizations": {
         "ko": {
@@ -761,12 +961,62 @@
         }
       }
     },
+    "Skip": {
+      "localizations": {
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "건너뛰기"
+          }
+        }
+      }
+    },
     "Soonest %@": {
       "localizations": {
         "ko": {
           "stringUnit": {
             "state": "translated",
             "value": "가장 급한 것 %@"
+          }
+        }
+      }
+    },
+    "Spinach": {
+      "localizations": {
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "시금치"
+          }
+        }
+      }
+    },
+    "Swipe left when you finish something. Swipe right when you buy it again, and Keepsy fills in where it goes and how long it lasts.": {
+      "localizations": {
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "다 쓰면 왼쪽으로 밀고, 또 사면 오른쪽으로 밀어요. 어디에 두는지, 얼마나 가는지는 Keepsy가 채워드려요."
+          }
+        }
+      }
+    },
+    "Swipe when things change": {
+      "localizations": {
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "바뀌면 밀어주세요"
+          }
+        }
+      }
+    },
+    "This can't be undone.": {
+      "localizations": {
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "되돌릴 수 없어요."
           }
         }
       }
@@ -801,12 +1051,42 @@
         }
       }
     },
+    "To scan dates, allow Keepsy to use the camera in Settings.": {
+      "localizations": {
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "날짜를 스캔하려면 설정에서 Keepsy의 카메라 사용을 허용해 주세요."
+          }
+        }
+      }
+    },
     "Today or tomorrow": {
       "localizations": {
         "ko": {
           "stringUnit": {
             "state": "translated",
             "value": "오늘·내일"
+          }
+        }
+      }
+    },
+    "Touch and hold an item to change how much is left, move it to the freezer, or mark it as thrown away.": {
+      "localizations": {
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "물건을 길게 누르면 남은 양을 바꾸거나, 냉동실로 옮기거나, 버렸다고 표시할 수 있어요."
+          }
+        }
+      }
+    },
+    "Turn On Reminders": {
+      "localizations": {
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "알림 켜기"
           }
         }
       }
@@ -831,12 +1111,32 @@
         }
       }
     },
+    "Version": {
+      "localizations": {
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "버전"
+          }
+        }
+      }
+    },
     "Within %lld days": {
       "localizations": {
         "ko": {
           "stringUnit": {
             "state": "translated",
             "value": "%lld일 이내"
+          }
+        }
+      }
+    },
+    "Your items stay on this iPhone. Nothing is sent to us.": {
+      "localizations": {
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "모든 기록은 이 iPhone에만 저장되고, 저희에게 전송되지 않아요."
           }
         }
       }

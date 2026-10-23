@@ -1,6 +1,8 @@
 import SwiftUI
 
 struct ContentView: View {
+    @AppStorage("onboarded") private var onboarded = false
+
     var body: some View {
         TabView {
             Tab("Expiring", systemImage: "clock") {
@@ -15,6 +17,9 @@ struct ContentView: View {
             Tab("Shopping", systemImage: "cart") {
                 ShoppingView()
             }
+        }
+        .fullScreenCover(isPresented: Binding { !onboarded } set: { onboarded = !$0 }) {
+            OnboardingView { onboarded = true }
         }
     }
 }

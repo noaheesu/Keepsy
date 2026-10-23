@@ -306,6 +306,21 @@ struct LocationTests {
 
 @MainActor
 struct PersistenceTests {
+    @Test func deleteAllLeavesOnlyDefaultLocations() throws {
+        let context = Persistence(inMemory: true).container.viewContext
+        var draft = BatchDraft()
+        draft.name = "Milk"
+        try draft.save(to: nil, in: context)
+        try Shopping.add("Eggs", in: context)
+
+        try Persistence.deleteAll(in: context)
+
+        #expect(try context.count(for: Item.fetchRequest()) == 0)
+        #expect(try context.count(for: Batch.fetchRequest()) == 0)
+        #expect(try context.count(for: ShoppingEntry.fetchRequest()) == 0)
+        #expect(try context.count(for: Location.fetchRequest()) == 3)
+    }
+
     @Test func seedsDefaultLocationsOnce() throws {
         let persistence = Persistence(inMemory: true)
         let locations = try persistence.container.viewContext.fetch(Location.fetchRequest())

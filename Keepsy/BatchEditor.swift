@@ -7,6 +7,7 @@ struct BatchEditor: View {
 
     @Environment(\.managedObjectContext) private var context
     @Environment(\.dismiss) private var dismiss
+    @Environment(\.openURL) private var openURL
     @FetchRequest(sortDescriptors: [SortDescriptor(\Location.sortOrder), SortDescriptor(\Location.name)])
     private var locations: FetchedResults<Location>
     @FetchRequest(sortDescriptors: [SortDescriptor(\Item.name)], predicate: NSPredicate(value: false))
@@ -16,6 +17,7 @@ struct BatchEditor: View {
     @State private var showSaveError = false
     @State private var scanningDate = false
     @State private var showsQuantity = false
+    @State private var cameraDenied = false
 
     init(target: EditorTarget) {
         switch target {
@@ -124,6 +126,14 @@ struct BatchEditor: View {
                 draft.photo = data.downscaledJPEG()
             }
             .alert("Couldn't save", isPresented: $showSaveError) {}
+            .alert("Camera access is off", isPresented: $cameraDenied) {
+                if let settings = AppLinks.systemSettings {
+                    Button("Open Settings") { openURL(settings) }
+                }
+                Button("Cancel", role: .cancel) {}
+            } message: {
+                Text("To scan dates, allow Keepsy to use the camera in Settings.")
+            }
             .fullScreenCover(isPresented: $scanningDate) {
                 DateScannerSheet { draft.expiresAt = $0 }
             }
@@ -145,8 +155,16 @@ struct BatchEditor: View {
                         .contentTransition(.numericText())
                 }
                 QuickDates(selection: $draft.expiresAt)
-                if DateScanner.isAvailable {
-                    Button("Scan Date", systemImage: "camera.viewfinder") { scanningDate = true }
+                if DateScanner.isSupported {
+                    Button("Scan Date", systemImage: "camera.viewfinder") {
+                        Task {
+                            if await DateScanner.requestAccess() {
+                                scanningDate = true
+                            } else {
+                                cameraDenied = true
+                            }
+                        }
+                    }
                 }
             }
         } header: {
