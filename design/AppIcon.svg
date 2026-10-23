@@ -12,7 +12,7 @@
       <path d="M0 60 L40 10 L120 10 L120 170 L0 170 Z" fill="#FFFFFF" stroke="#1E3B2B" stroke-width="10" stroke-linejoin="round"/>
       <path d="M40 10 L80 60 L0 60" fill="#C8382A" stroke="#1E3B2B" stroke-width="10" stroke-linejoin="round"/>
       <path d="M80 60 L120 10" stroke="#1E3B2B" stroke-width="10"/>
-      <circle cx="58" cy="115" r="18" fill="#2E6B4A"/>
+      <ellipse cx="42.7" cy="105" rx="5.4" ry="7.290000000000001" fill="#1E3B2B"/><ellipse cx="73.3" cy="105" rx="5.4" ry="7.290000000000001" fill="#1E3B2B"/><circle cx="31.900000000000002" cy="119.4" r="7.2" fill="#F4A6A0"/><circle cx="84.1" cy="119.4" r="7.2" fill="#F4A6A0"/><path d="M49.0 119.4 q9.0 10.8 18.0 0" fill="none" stroke="#1E3B2B" stroke-width="8" stroke-linejoin="round" stroke-linecap="round"/>
     </g>
     <g transform="translate(560,300)">
       <rect x="0" y="22" width="90" height="100" rx="20" fill="#F2B632" stroke="#1E3B2B" stroke-width="10"/>
@@ -36,15 +36,15 @@
   </g>
   <!-- open door swinging left -->
   <path d="M330 190 L170 260 L170 860 L330 830 Z" fill="#FFF8E7" stroke="#1E3B2B" stroke-width="10" stroke-linejoin="round"/>
-  <rect x="200" y="420" width="18" height="140" rx="9" fill="#1E3B2B"/>
+  <rect x="200" y="330" width="18" height="110" rx="9" fill="#1E3B2B"/><ellipse cx="225.1" cy="560" rx="7.800000000000001" ry="10.530000000000001" fill="#1E3B2B"/><ellipse cx="284.9" cy="560" rx="7.800000000000001" ry="10.530000000000001" fill="#1E3B2B"/><circle cx="209.5" cy="580.8" r="10.4" fill="#F4A6A0"/><circle cx="300.5" cy="580.8" r="10.4" fill="#F4A6A0"/><path d="M239.4 578.2 q15.600000000000001 23.400000000000002 31.200000000000003 0 z" fill="#1E3B2B"/>
   <!-- tumbling items -->
   <g transform="translate(740,690) rotate(-20)">
     <circle cx="0" cy="0" r="70" fill="#C8382A" stroke="#1E3B2B" stroke-width="10"/>
     <path d="M0 -70 C5 -95 20 -105 35 -110" stroke="#1E3B2B" stroke-width="10" fill="none" stroke-linecap="round"/>
-    <ellipse cx="-22" cy="-24" rx="16" ry="10" fill="#E86A5C"/>
+    <ellipse cx="-18.0" cy="-5" rx="6.0" ry="8.100000000000001" fill="#1E3B2B"/><ellipse cx="18.0" cy="-5" rx="6.0" ry="8.100000000000001" fill="#1E3B2B"/><circle cx="-30.0" cy="11.0" r="8.0" fill="#F4A6A0"/><circle cx="30.0" cy="11.0" r="8.0" fill="#F4A6A0"/><ellipse cx="0" cy="15.0" rx="6.0" ry="8.0" fill="#1E3B2B"/>
   </g>
   <g transform="translate(820,860) rotate(35)">
-    <ellipse cx="0" cy="0" rx="40" ry="52" fill="#FFFFFF" stroke="#1E3B2B" stroke-width="10"/>
+    <ellipse cx="0" cy="0" rx="40" ry="52" fill="#FFFFFF" stroke="#1E3B2B" stroke-width="10"/><ellipse cx="-9.1" cy="-4" rx="4.199999999999999" ry="5.669999999999999" fill="#1E3B2B"/><ellipse cx="9.1" cy="-4" rx="4.199999999999999" ry="5.669999999999999" fill="#1E3B2B"/><circle cx="-17.5" cy="7.199999999999999" r="5.6" fill="#F4A6A0"/><circle cx="17.5" cy="7.199999999999999" r="5.6" fill="#F4A6A0"/><path d="M-7.0 7.199999999999999 q7.0 8.399999999999999 14.0 0" fill="none" stroke="#1E3B2B" stroke-width="8" stroke-linejoin="round" stroke-linecap="round"/>
   </g>
   <!-- D-day tag hanging off the door -->
   <g transform="translate(150,600) rotate(-12)">

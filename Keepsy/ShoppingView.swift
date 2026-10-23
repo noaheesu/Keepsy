@@ -46,7 +46,11 @@ struct ShoppingView: View {
             .overlay {
                 if entries.isEmpty && suggestions.isEmpty {
                     ContentUnavailableView {
-                        Label("Your list is empty", systemImage: "cart")
+                        VStack(spacing: 12) {
+                            Image(.bag).illustration(height: 150)
+                            Text("Your list is empty")
+                                .font(.stamp(.title3))
+                        }
                     } description: {
                         Text("Type what you need above. Things that run out, or that you usually buy around now, show up here.")
                     }

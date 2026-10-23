@@ -22,6 +22,16 @@ extension Font {
     }
 }
 
+extension Image {
+    /// The hand-drawn characters from design/illustrations; decorative only.
+    func illustration(height: CGFloat) -> some View {
+        resizable()
+            .scaledToFit()
+            .frame(height: height)
+            .accessibilityHidden(true)
+    }
+}
+
 /// Tappable batch rows with quick "used one" / "bought again" swipes; the owning list presents the editor for `target`.
 struct BatchRows: View {
     let batches: [Batch]

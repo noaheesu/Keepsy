@@ -13,7 +13,7 @@ struct ExpiringView: View {
         let groups = Dictionary(grouping: datedBatches) { Expiry.Urgency(daysLeft: Expiry.daysLeft(until: $0.expiresAt ?? .now)) }
         NavigationStack {
             List {
-                Section {
+                if !datedBatches.isEmpty || !undatedBatches.isEmpty {
                     TodayHeader(dueThisWeek: datedBatches.count - (groups[.overdue]?.count ?? 0) - (groups[.later]?.count ?? 0))
                         .listRowInsets(EdgeInsets(top: 0, leading: 20, bottom: 8, trailing: 20))
                         .listRowBackground(Color.clear)
@@ -67,7 +67,11 @@ struct ExpiringView: View {
             ContentUnavailableView.search(text: query)
         } else {
             ContentUnavailableView {
-                Label("No items yet", systemImage: "refrigerator")
+                VStack(spacing: 12) {
+                    Image(.fridge).illustration(height: 160)
+                    Text("No items yet")
+                        .font(.stamp(.title3))
+                }
             } description: {
                 Text("Add what's in your fridge and cupboards to see what to use first.")
             } actions: {

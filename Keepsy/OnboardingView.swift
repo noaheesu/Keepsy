@@ -14,6 +14,7 @@ struct OnboardingView: View {
             TabView(selection: $page.animation()) {
                 Tip(title: "Swipe when things change", message: "Swipe left when you finish something. Swipe right when you buy it again, and Keepsy fills in where it goes and how long it lasts.") {
                     VStack(spacing: 10) {
+                        Image(.milk).illustration(height: 170)
                         MockRow(name: "Milk", days: 2)
                         HStack {
                             SwipeHint(title: "Bought Again", systemImage: "arrow.clockwise", color: .accentColor)
@@ -25,6 +26,8 @@ struct OnboardingView: View {
                 .tag(0)
                 Tip(title: "Hold for more", message: "Touch and hold an item to change how much is left, move it to the freezer, or mark it as thrown away.") {
                     VStack(alignment: .leading, spacing: 10) {
+                        Image(.fridge).illustration(height: 130)
+                            .frame(maxWidth: .infinity)
                         MockRow(name: "Spinach", days: 1)
                         VStack(alignment: .leading, spacing: 0) {
                             MenuLine(title: "Remaining", systemImage: "gauge.with.dots.needle.50percent")
@@ -39,18 +42,12 @@ struct OnboardingView: View {
                 }
                 .tag(1)
                 Tip(title: "Scan the date", message: "Point the camera at the package and Keepsy reads the expiration date for you.") {
-                    ZStack {
-                        Image(systemName: "viewfinder")
-                            .font(.system(size: 150, weight: .ultraLight))
-                            .foregroundStyle(Color.accentColor)
-                        Text(verbatim: "2026.10.25")
-                            .font(.stamp(.title3))
-                    }
-                    .accessibilityHidden(true)
+                    Image(.scan).illustration(height: 240)
                 }
                 .tag(2)
                 Tip(title: "A nudge each morning", message: "Get one notification a day with what runs out soon. Pick a time; you can change it later in Settings.") {
                     VStack(spacing: 16) {
+                        Image(.clock).illustration(height: 150)
                         HStack(alignment: .top, spacing: 10) {
                             Image(systemName: "bell.badge.fill")
                                 .foregroundStyle(Color.accentColor)
