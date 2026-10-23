@@ -1,0 +1,57 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1024" height="1024" viewBox="0 0 1024 1024">
+  <rect width="1024" height="1024" fill="#2E6B4A"/>
+  <circle cx="830" cy="190" r="260" fill="#3A7D58"/>
+  <!-- fridge body -->
+  <g transform="rotate(-6 512 520)">
+    <rect x="330" y="170" width="380" height="660" rx="70" fill="#FFF8E7"/>
+    <rect x="365" y="210" width="310" height="580" rx="44" fill="#DCEFE3"/>
+    <rect x="365" y="420" width="310" height="16" fill="#FFF8E7"/>
+    <rect x="365" y="610" width="310" height="16" fill="#FFF8E7"/>
+    <!-- top shelf: milk carton + jar -->
+    <g transform="translate(400,250)">
+      <path d="M0 60 L40 10 L120 10 L120 170 L0 170 Z" fill="#FFFFFF" stroke="#1E3B2B" stroke-width="10" stroke-linejoin="round"/>
+      <path d="M40 10 L80 60 L0 60" fill="#C8382A" stroke="#1E3B2B" stroke-width="10" stroke-linejoin="round"/>
+      <path d="M80 60 L120 10" stroke="#1E3B2B" stroke-width="10"/>
+      <circle cx="58" cy="115" r="18" fill="#2E6B4A"/>
+    </g>
+    <g transform="translate(560,300)">
+      <rect x="0" y="22" width="90" height="100" rx="20" fill="#F2B632" stroke="#1E3B2B" stroke-width="10"/>
+      <rect x="-6" y="0" width="102" height="34" rx="10" fill="#C8382A" stroke="#1E3B2B" stroke-width="10"/>
+    </g>
+    <!-- middle shelf: cheese + carrots -->
+    <g transform="translate(395,500)">
+      <path d="M0 100 L130 20 L150 100 Z" fill="#F2B632" stroke="#1E3B2B" stroke-width="10" stroke-linejoin="round"/>
+      <circle cx="70" cy="80" r="12" fill="#D99A1E"/>
+      <circle cx="115" cy="62" r="9" fill="#D99A1E"/>
+    </g>
+    <g transform="translate(570,470) rotate(25)">
+      <path d="M0 0 L40 0 L20 130 Z" fill="#F08A24" stroke="#1E3B2B" stroke-width="10" stroke-linejoin="round"/>
+      <path d="M10 0 C0 -40 20 -50 20 -10 C20 -50 45 -40 30 0" fill="#4F9A63" stroke="#1E3B2B" stroke-width="8" stroke-linejoin="round"/>
+    </g>
+    <!-- bottom shelf: eggs -->
+    <g transform="translate(400,660)">
+      <ellipse cx="40" cy="60" rx="38" ry="48" fill="#FFFFFF" stroke="#1E3B2B" stroke-width="10"/>
+      <ellipse cx="125" cy="66" rx="36" ry="44" fill="#FFFFFF" stroke="#1E3B2B" stroke-width="10"/>
+    </g>
+  </g>
+  <!-- open door swinging left -->
+  <path d="M330 190 L170 260 L170 860 L330 830 Z" fill="#FFF8E7" stroke="#1E3B2B" stroke-width="10" stroke-linejoin="round"/>
+  <rect x="200" y="420" width="18" height="140" rx="9" fill="#1E3B2B"/>
+  <!-- tumbling items -->
+  <g transform="translate(740,690) rotate(-20)">
+    <circle cx="0" cy="0" r="70" fill="#C8382A" stroke="#1E3B2B" stroke-width="10"/>
+    <path d="M0 -70 C5 -95 20 -105 35 -110" stroke="#1E3B2B" stroke-width="10" fill="none" stroke-linecap="round"/>
+    <ellipse cx="-22" cy="-24" rx="16" ry="10" fill="#E86A5C"/>
+  </g>
+  <g transform="translate(820,860) rotate(35)">
+    <ellipse cx="0" cy="0" rx="40" ry="52" fill="#FFFFFF" stroke="#1E3B2B" stroke-width="10"/>
+  </g>
+  <!-- D-day tag hanging off the door -->
+  <g transform="translate(150,600) rotate(-12)">
+    <path d="M60 0 L60 40" stroke="#1E3B2B" stroke-width="8"/>
+    <rect x="0" y="40" width="130" height="78" rx="16" fill="#F2B632" stroke="#1E3B2B" stroke-width="10"/>
+    <text x="65" y="98" text-anchor="middle" font-family="Helvetica Neue" font-weight="900" font-size="46" fill="#1E3B2B">D-3</text>
+  </g>
+  <!-- motion marks -->
+  <path d="M860 600 q30 -10 50 10 M880 760 q30 0 40 25" stroke="#FFF8E7" stroke-width="12" fill="none" stroke-linecap="round"/>
+</svg>
