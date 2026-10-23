@@ -1,6 +1,16 @@
 {
   "sourceLanguage": "en",
   "strings": {
+    "%@ and %lld more": {
+      "localizations": {
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%1$@ 외 %2$lld개"
+          }
+        }
+      }
+    },
     "%@ · %@ · %@": {
       "shouldTranslate": false
     },
@@ -84,12 +94,32 @@
         }
       }
     },
+    "Daily reminder": {
+      "localizations": {
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "매일 알림"
+          }
+        }
+      }
+    },
     "Delete": {
       "localizations": {
         "ko": {
           "stringUnit": {
             "state": "translated",
             "value": "삭제"
+          }
+        }
+      }
+    },
+    "Done": {
+      "localizations": {
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "완료"
           }
         }
       }
@@ -140,6 +170,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "임박순"
+          }
+        }
+      }
+    },
+    "Expiring soon": {
+      "localizations": {
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "곧 기한이 끝나요"
           }
         }
       }
@@ -297,6 +337,16 @@
         }
       }
     },
+    "One notification a day listing items that expire soon.": {
+      "localizations": {
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "기한이 얼마 남지 않은 물건을 하루 한 번 모아서 알려드려요."
+          }
+        }
+      }
+    },
     "Photo": {
       "localizations": {
         "ko": {
@@ -367,6 +417,16 @@
         }
       }
     },
+    "Settings": {
+      "localizations": {
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "설정"
+          }
+        }
+      }
+    },
     "Shopping": {
       "localizations": {
         "ko": {
@@ -383,6 +443,26 @@
           "stringUnit": {
             "state": "translated",
             "value": "추천"
+          }
+        }
+      }
+    },
+    "Time": {
+      "localizations": {
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "시간"
+          }
+        }
+      }
+    },
+    "Within %lld days": {
+      "localizations": {
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%lld일 이내"
           }
         }
       }

@@ -8,6 +8,7 @@ struct ExpiringView: View {
     @State private var query = ""
     @State private var editing: Batch?
     @State private var adding = false
+    @State private var showingSettings = false
 
     var body: some View {
         NavigationStack {
@@ -37,7 +38,15 @@ struct ExpiringView: View {
             }
             .navigationTitle("Keepsy")
             .toolbar {
-                Button("Add Item", systemImage: "plus") { adding = true }
+                ToolbarItem(placement: .topBarLeading) {
+                    Button("Settings", systemImage: "gearshape") { showingSettings = true }
+                }
+                ToolbarItem(placement: .primaryAction) {
+                    Button("Add Item", systemImage: "plus") { adding = true }
+                }
+            }
+            .sheet(isPresented: $showingSettings) {
+                SettingsView()
             }
             .sheet(isPresented: $adding) {
                 BatchEditor(batch: nil)

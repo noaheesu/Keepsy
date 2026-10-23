@@ -70,6 +70,29 @@ struct BatchDraftTests {
     }
 }
 
+struct ReminderDigestTests {
+    let calendar = Calendar(identifier: .gregorian)
+
+    func day(_ offset: Int) -> Date {
+        calendar.date(byAdding: .day, value: offset, to: calendar.startOfDay(for: .now)) ?? .now
+    }
+
+    @Test func listsOnlyItemsDueWithinWindowSoonestFirst() {
+        let entries = [(name: "Eggs", expiresAt: day(5)), (name: "Milk", expiresAt: day(0)),
+                       (name: "Old", expiresAt: day(-1)), (name: "Kimchi", expiresAt: day(30))]
+        #expect(Reminders.digest(entries, on: day(0), within: 7, calendar: calendar) == "Milk D-Day, Eggs D-5")
+        #expect(Reminders.digest(entries, on: day(0), within: 3, calendar: calendar) == "Milk D-Day")
+        #expect(Reminders.digest(entries, on: day(1), within: 3, calendar: calendar) == nil)
+    }
+
+    @Test func collapsesLongLists() throws {
+        let entries = (1...5).map { (name: "I\($0)", expiresAt: day($0)) }
+        let body = try #require(Reminders.digest(entries, on: day(0), within: 7, calendar: calendar))
+        #expect(body.hasPrefix("I1 D-1, I2 D-2, I3 D-3"))
+        #expect(body.contains("2"))
+    }
+}
+
 @MainActor
 struct ReAddTests {
     let context = Persistence(inMemory: true).container.viewContext
