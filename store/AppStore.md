@@ -31,7 +31,7 @@ One reminder a day
 Pick a time and get a single notification with what expires soon.
 
 Private by design
-No account, no ads, no tracking. Your items stay on your iPhone.
+No account, no ads, no tracking. Your items stay in your own iCloud.
 
 ## 한국어
 
@@ -62,7 +62,7 @@ No account, no ads, no tracking. Your items stay on your iPhone.
 원하는 시간에 곧 기한이 끝나는 것만 모아서 알려드려요.
 
 개인정보는 그대로
-계정, 광고, 추적 없음. 기록은 내 iPhone에만 있어요.
+계정, 광고, 추적 없음. 기록은 내 iCloud에만 있어요.
 
 ## Review notes
 

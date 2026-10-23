@@ -357,4 +357,19 @@ struct PersistenceTests {
         #expect(locations.count == 3)
         #expect(locations.filter { $0.parent == nil }.count == 1)
     }
+
+    @Test func syncedDuplicateDefaultsMergeIntoOne() throws {
+        let context = Persistence(inMemory: true).container.viewContext
+        let kitchen2 = Location.make(String(localized: "Kitchen"), parent: nil, in: context)
+        let fridge2 = Location.make(String(localized: "Fridge"), parent: kitchen2, in: context)
+        let batch = Batch(context: context)
+        batch.location = fridge2
+        try context.save()
+
+        Persistence.mergeDuplicateLocations(in: context)
+        let names = try context.fetch(Location.fetchRequest()).compactMap(\.name).sorted()
+        #expect(names == [String(localized: "Freezer"), String(localized: "Fridge"), String(localized: "Kitchen")].sorted())
+        #expect(batch.location?.name == String(localized: "Fridge"))
+        #expect(batch.location?.parent?.name == String(localized: "Kitchen"))
+    }
 }

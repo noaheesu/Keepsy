@@ -42,13 +42,22 @@ struct Persistence {
         if inMemory {
             description?.url = URL(fileURLWithPath: "/dev/null")
         }
-        // shortcut: CloudKit off until a paid developer account exists; set cloudKitContainerOptions to enable sync/sharing.
-        description?.cloudKitContainerOptions = nil
+        // Unit tests run the app unsigned, and CloudKit without its entitlement crashes at launch.
+        if inMemory || ProcessInfo.processInfo.environment["XCTestConfigurationFilePath"] != nil {
+            description?.cloudKitContainerOptions = nil
+        } else {
+            description?.cloudKitContainerOptions = NSPersistentCloudKitContainerOptions(containerIdentifier: Self.cloudKitContainer)
+            description?.setOption(true as NSNumber, forKey: NSPersistentHistoryTrackingKey)
+            description?.setOption(true as NSNumber, forKey: NSPersistentStoreRemoteChangeNotificationPostOptionKey)
+        }
         // A failed load leaves no stores; the app shows StoreErrorView instead of crashing.
         container.loadPersistentStores { _, _ in }
         container.viewContext.automaticallyMergesChangesFromParent = true
+        container.viewContext.mergePolicy = NSMergePolicy.mergeByPropertyObjectTrump
         Self.seedDefaultLocations(in: container.viewContext)
     }
+
+    static let cloudKitContainer = "iCloud.com.noahchoi.keepsy"
 
     var isLoaded: Bool { !container.persistentStoreCoordinator.persistentStores.isEmpty }
 
@@ -62,7 +71,31 @@ struct Persistence {
         seedDefaultLocations(in: context)
     }
 
-    // shortcut: seeding per device will duplicate defaults once CloudKit sync is on, dedupe when enabling sync.
+    /// Every device seeds Kitchen › Fridge / Freezer before its first sync, so after an import there can be two of each.
+    /// Same-named siblings merge into the one with the smallest id, so all devices keep the same record.
+    static func mergeDuplicateLocations(in context: NSManagedObjectContext) {
+        let roots = Location.fetchRequest()
+        roots.predicate = NSPredicate(format: "parent == nil")
+        guard let top = try? context.fetch(roots) else { return }
+        merge(top)
+        if context.hasChanges { try? context.save() }
+    }
+
+    private static func merge(_ siblings: [Location]) {
+        for group in Dictionary(grouping: siblings, by: { $0.name ?? "" }).values {
+            let sorted = group.sorted { ($0.id?.uuidString ?? "") < ($1.id?.uuidString ?? "") }
+            guard let keeper = sorted.first else { continue }
+            for duplicate in sorted.dropFirst() {
+                keeper.isFreezer = keeper.isFreezer || duplicate.isFreezer
+                for batch in (duplicate.batches as? Set<Batch>) ?? [] { batch.location = keeper }
+                for item in (duplicate.lastUsedBy as? Set<Item>) ?? [] { item.lastLocation = keeper }
+                for child in (duplicate.children as? Set<Location>) ?? [] { child.parent = keeper }
+                duplicate.managedObjectContext?.delete(duplicate)
+            }
+            merge(((keeper.children as? Set<Location>) ?? []).map(\.self))
+        }
+    }
+
     private static func seedDefaultLocations(in context: NSManagedObjectContext) {
         guard (try? context.count(for: Location.fetchRequest())) == 0 else { return }
         let kitchen = Location.make(String(localized: "Kitchen"), parent: nil, in: context)

@@ -35,10 +35,11 @@ xcodebuild test -project Keepsy.xcodeproj -scheme Keepsy -destination 'platform=
 - 한국어/영어(영어는 "3 days / Today", 한국어는 D-day). 다크 모드.
 - 캐릭터 일러스트 아이콘과 앱 안 그림 5장. 개인정보처리방침 GitHub Pages 공개, 스토어 문구 초안.
 - 버림 통계(설정 › 버림 통계: 최근 30일 다 씀·버림·비율, 자주 버리는 것).
-- 테스트 26개 통과.
+- iCloud 동기화(개인 DB), 기기별 기본 장소 중복 자동 정리.
+- 테스트 27개 통과.
 
 **남은 일**
-- 유료 개발자 계정 후: iCloud 동기화, 가족 공유, "곧 만료" 위젯.
+- 가족 공유, "곧 만료" 위젯. CloudKit 스키마 Production 배포.
 - 앱 전용 문의 이메일(지금은 GitHub 이슈).
 - 출시: 스크린샷, App Store Connect 등록, EU 비판매자 신고. 중국 제외 전 세계.
 - 실제 기기에서 날짜 스캔, 장보기·장소·설정 화면 터치 확인.

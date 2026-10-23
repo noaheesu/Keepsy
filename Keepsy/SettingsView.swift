@@ -62,8 +62,7 @@ struct SettingsView: View {
                 Section {
                     Button("Delete All Data", systemImage: "trash", role: .destructive) { confirmingDelete = true }
                 } footer: {
-                    // Revisit this wording when iCloud sync is turned on.
-                    Text("Your items stay on this iPhone. Nothing is sent to us.")
+                    Text("Your items sync through your own iCloud account. Nothing is sent to us.")
                 }
             }
             .navigationTitle("Settings")
@@ -81,7 +80,7 @@ struct SettingsView: View {
                     }
                 }
             } message: {
-                Text("This can't be undone.")
+                Text("They are also removed from iCloud and your other devices. This can't be undone.")
             }
             .alert("Couldn't delete your data. Try again.", isPresented: $deleteFailed) {}
             .task(id: [enabled ? 1 : 0, minutes, days]) {

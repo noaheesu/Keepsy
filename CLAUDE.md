@@ -16,7 +16,7 @@
 
 ## 구조
 - Xcode 26, iOS 18+, Swift 6, iPhone 전용. 폴더 동기화 그룹이라 `Keepsy/`에 파일을 추가하면 자동으로 타깃에 들어간다.
-- 저장: Core Data(`Keepsy.xcdatamodeld`) + `NSPersistentCloudKitContainer`. 공유(가족) 때문에 SwiftData 대신 Core Data를 쓴다. 지금은 CloudKit 꺼짐(`Persistence.swift`의 shortcut 주석).
+- 저장: Core Data(`Keepsy.xcdatamodeld`) + `NSPersistentCloudKitContainer`. 공유(가족) 때문에 SwiftData 대신 Core Data를 쓴다. CloudKit 개인 DB 동기화 켜짐(컨테이너 `iCloud.com.noahchoi.keepsy`, 팀 `4CAH5282L3`, `Keepsy.entitlements`). 테스트 호스트에서는 꺼짐(서명 없이 돌아서). 기기마다 만든 기본 장소는 동기화 후 `mergeDuplicateLocations`가 합친다.
 - 엔티티: `Location`(최대 3단계 트리, `isFreezer`), `Item`(이름·사진·마지막 장소·기한 간격 `shelfLifeDays`·구매 주기 `restockDays`), `Batch`(장소·기한·수량·잔량 4단계·`needsDateCheck`), `ShoppingEntry`, `UsageEvent`(다 씀/버림 기록).
 - 로직은 뷰 밖에 둔다: `BatchDraft`(저장/다시 추가), `Location`(트리, 삭제 시 내용물을 부모로), `Shopping`(추천·집에 넣기), `Reminders`(하루 1회 요약 알림, 14일치 미리 예약), `PackageDate`(포장지 날짜 OCR 파싱, 지역별 일/월 순서), `Expiry`(D-day, 긴급도).
 - 화면: 탭 3개 [임박순 `ExpiringView` / 장소 `LocationList` / 장보기 `ShoppingView`], 공용 행 `BatchRows`, 편집 `BatchEditor`(`EditorTarget`: new/edit/restock), `SettingsView`, `OnboardingView`, `StoreErrorView`.
@@ -31,7 +31,8 @@
 - 하지 않기로 한 것: 바코드(나라별 DB 차이), 영수증 OCR, 레시피, 개봉일, 카테고리별 기본 기한, Siri.
 
 ## 남은 일
-- 유료 개발자 계정 생성 후(출시 전 필수): CloudKit 동기화 켜기 + 가족 공유(CKShare) + "곧 만료" 위젯(App Group). 기본 장소 중복 생성 정리, 설정의 "이 iPhone에만 저장" 문구 수정.
+- 가족 공유(CKShare) + "곧 만료" 위젯(App Group). 출시 전 CloudKit 대시보드에서 스키마를 Production에 배포.
+- 두 기기로 실제 동기화 확인 못 함.
 - 문의 창구: 지금은 GitHub 이슈(`AppLinks.support`). 앱 전용 이메일을 만들면 교체.
 - 출시: 스크린샷, App Store Connect 등록, EU 판매자 여부(비판매자) 신고.
 - 확인 못 한 것: 실제 기기에서 날짜 스캔, 길게 누르기 메뉴·장보기·장소·설정 화면의 터치 동작.

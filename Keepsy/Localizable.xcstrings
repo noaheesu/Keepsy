@@ -1113,12 +1113,12 @@
         }
       }
     },
-    "This can't be undone.": {
+    "They are also removed from iCloud and your other devices. This can't be undone.": {
       "localizations": {
         "ko": {
           "stringUnit": {
             "state": "translated",
-            "value": "되돌릴 수 없어요."
+            "value": "iCloud와 다른 기기에서도 지워져요. 되돌릴 수 없어요."
           }
         }
       }
@@ -1283,12 +1283,12 @@
         }
       }
     },
-    "Your items stay on this iPhone. Nothing is sent to us.": {
+    "Your items sync through your own iCloud account. Nothing is sent to us.": {
       "localizations": {
         "ko": {
           "stringUnit": {
             "state": "translated",
-            "value": "모든 기록은 이 iPhone에만 저장되고, 저희에게 전송되지 않아요."
+            "value": "기록은 내 iCloud 계정으로 동기화돼요. 저희에게는 아무것도 전송되지 않아요."
           }
         }
       }
