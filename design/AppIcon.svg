@@ -1,6 +1,8 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="1024" height="1024" viewBox="0 0 1024 1024">
   <rect width="1024" height="1024" fill="#2E6B4A"/>
   <circle cx="830" cy="190" r="260" fill="#3A7D58"/>
+  <!-- artwork zoomed in so it reads at home-screen size -->
+  <g transform="translate(512 512) scale(1.25) translate(-465 -530)">
   <!-- fridge body -->
   <g transform="rotate(-6 512 520)">
     <rect x="330" y="170" width="380" height="660" rx="70" fill="#FFF8E7"/>
@@ -54,4 +56,5 @@
   </g>
   <!-- motion marks -->
   <path d="M860 600 q30 -10 50 10 M880 760 q30 0 40 25" stroke="#FFF8E7" stroke-width="12" fill="none" stroke-linecap="round"/>
+  </g>
 </svg>

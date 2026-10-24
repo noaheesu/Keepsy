@@ -177,9 +177,16 @@ struct BatchRow: View {
                 .clipShape(.rect(cornerRadius: 10))
                 .accessibilityHidden(true)
         } else {
-            Text(String(batch.item?.name?.prefix(1) ?? ""))
-                .font(.stamp(.headline))
-                .foregroundStyle(Color.accentColor)
+            let name = batch.item?.name ?? ""
+            Group {
+                if let emoji = batch.item?.emoji ?? ItemEmoji.guess(for: name) {
+                    Text(emoji).font(.title2)
+                } else {
+                    Text(String(name.prefix(1)))
+                        .font(.stamp(.headline))
+                        .foregroundStyle(Color.accentColor)
+                }
+            }
                 .frame(width: thumbnailSide, height: thumbnailSide)
                 .background(Color.accentColor.opacity(0.12), in: .rect(cornerRadius: 10))
                 .accessibilityHidden(true)

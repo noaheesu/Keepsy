@@ -492,6 +492,16 @@
         }
       }
     },
+    "Emoji": {
+      "localizations": {
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "이모지"
+          }
+        }
+      }
+    },
     "Empty": {
       "localizations": {
         "ko": {

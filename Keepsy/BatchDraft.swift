@@ -86,6 +86,8 @@ struct BatchDraft {
     var quantity = 1
     var level = Level.full
     var photo: Data?
+    /// Picked by hand; empty means the list guesses one from the name.
+    var emoji = ""
 
     init(location: Location? = nil) {
         self.location = location
@@ -99,6 +101,7 @@ struct BatchDraft {
         quantity = Int(batch.quantity)
         level = Level(rawValue: batch.level) ?? .full
         photo = batch.item?.photo
+        emoji = batch.item?.emoji ?? ""
     }
 
     /// Re-adding something bought before: same place, same shelf life counted from today.
@@ -106,6 +109,7 @@ struct BatchDraft {
         name = item.name ?? name
         location = item.lastLocation
         photo = item.photo
+        emoji = item.emoji ?? ""
         hasExpiry = item.shelfLifeDays > 0
         expiresAt = Calendar.current.date(byAdding: .day, value: Int(item.shelfLifeDays), to: now) ?? now
     }
@@ -129,6 +133,7 @@ struct BatchDraft {
         if existing != nil || photo != nil {
             item.photo = photo
         }
+        item.emoji = emoji.isEmpty ? nil : emoji
         if existing == nil {
             item.recordPurchase()
         }

@@ -41,7 +41,10 @@ enum Shopping {
     }
 
     /// Bought items go back into stock, where and for as long as last time.
-    static func putAway(in context: NSManagedObjectContext) throws {
+    /// Returns the never-stocked ones, which still need a place and a date.
+    @discardableResult
+    static func putAway(in context: NSManagedObjectContext) throws -> [Batch] {
+        var new: [Batch] = []
         let done = ShoppingEntry.fetchRequest()
         done.predicate = NSPredicate(format: "isDone == YES")
         for entry in try context.fetch(done) {
@@ -54,11 +57,14 @@ enum Shopping {
                 var draft = BatchDraft()
                 draft.name = name
                 draft.hasExpiry = false
-                try draft.save(to: nil, in: context).needsDateCheck = true
+                let batch = try draft.save(to: nil, in: context)
+                batch.needsDateCheck = true
+                new.append(batch)
             }
             context.delete(entry)
         }
         try context.save()
+        return new
     }
 
     /// Typed names link to a known item so it drops out of suggestions.

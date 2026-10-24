@@ -212,8 +212,9 @@ struct ShoppingTests {
         try Shopping.add("Unknown", in: context)
         try context.fetch(ShoppingEntry.fetchRequest()).forEach { $0.isDone = true }
 
-        try Shopping.putAway(in: context)
+        let new = try Shopping.putAway(in: context)
 
+        #expect(new.map { $0.item?.name } == ["Unknown"])
         #expect(try context.count(for: ShoppingEntry.fetchRequest()) == 0)
         let milkBatch = try #require((milk.batches as? Set<Batch>)?.first)
         #expect(milkBatch.expiresAt.map { Expiry.daysLeft(until: $0) } == 10)
@@ -435,5 +436,17 @@ struct PersistenceTests {
         let items = try context.fetch(Item.fetchRequest())
         #expect(items.count == 1)
         #expect((items.first?.batches as? Set<Batch>)?.count == 2)
+    }
+}
+
+struct ItemEmojiTests {
+    @Test func longestKeywordWins() {
+        #expect(ItemEmoji.guess(for: "서울우유") == "🥛")
+        #expect(ItemEmoji.guess(for: "선크림") == "🧴")
+        #expect(ItemEmoji.guess(for: "아이스크림") == "🍦")
+        #expect(ItemEmoji.guess(for: "배추김치") == "🫙")
+        #expect(ItemEmoji.guess(for: "Brown Rice") == "🍚")
+        #expect(ItemEmoji.guess(for: "Eggplant") == "🍆")
+        #expect(ItemEmoji.guess(for: "Widget") == nil)
     }
 }

@@ -52,6 +52,15 @@ struct BatchEditor: View {
                         TextField("Name", text: $draft.name)
                             .font(.title3.weight(.semibold))
                     }
+                    LabeledContent("Emoji") {
+                        TextField(ItemEmoji.guess(for: draft.name) ?? "🙂", text: $draft.emoji)
+                            .multilineTextAlignment(.trailing)
+                            .font(.title2)
+                            .onChange(of: draft.emoji) {
+                                // One symbol only: typing another replaces it.
+                                if draft.emoji.count > 1 { draft.emoji = String(draft.emoji.suffix(1)) }
+                            }
+                    }
                     Picker("Location", selection: $draft.location) {
                         Text("None").tag(Location?.none)
                         ForEach(locations.sorted { $0.treeOrder.lexicographicallyPrecedes($1.treeOrder) }) { location in

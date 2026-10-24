@@ -45,7 +45,9 @@ struct Persistence {
     }()
 
     // Loaded once: a second model instance makes Core Data unable to map entities to their classes.
-    private static let model = NSManagedObjectModel.mergedModel(from: [.main]) ?? NSManagedObjectModel()
+    // The .momd holds every model version; loading it picks the current one, where merging would mix versions.
+    private static let model = Bundle.main.url(forResource: "Keepsy", withExtension: "momd")
+        .flatMap(NSManagedObjectModel.init(contentsOf:)) ?? NSManagedObjectModel()
 
     let container: NSPersistentCloudKitContainer
 

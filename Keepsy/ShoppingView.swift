@@ -6,6 +6,9 @@ struct ShoppingView: View {
     private var entries: FetchedResults<ShoppingEntry>
     @State private var suggestions: [Suggestion] = []
     @State private var newName = ""
+    /// Just put away for the first time, each opened in the editor in turn for a place and a date.
+    @State private var arriving: [Batch] = []
+    @State private var editing: Batch?
 
     var body: some View {
         let doneCount = entries.filter(\.isDone).count
@@ -62,7 +65,8 @@ struct ShoppingView: View {
                     Button {
                         withAnimation {
                             do {
-                                try Shopping.putAway(in: context)
+                                arriving = try Shopping.putAway(in: context)
+                                editing = arriving.isEmpty ? nil : arriving.removeFirst()
                             } catch {
                                 context.rollback()
                             }
@@ -80,6 +84,9 @@ struct ShoppingView: View {
                 }
             }
             .navigationTitle("Shopping")
+            .sheet(item: $editing, onDismiss: { editing = arriving.isEmpty ? nil : arriving.removeFirst() }) { batch in
+                BatchEditor(target: .edit(batch))
+            }
             .task { refreshSuggestions() }
             // Suggestions depend on batches and entries anywhere in the store, which no single fetch request tracks.
             .onReceive(NotificationCenter.default.publisher(for: .NSManagedObjectContextObjectsDidChange, object: context)) { _ in
