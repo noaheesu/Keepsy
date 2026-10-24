@@ -381,10 +381,58 @@ struct PersistenceTests {
         batch.location = fridge2
         try context.save()
 
-        Persistence.mergeDuplicateLocations(in: context)
+        Persistence.mergeDuplicates(in: context)
         let names = try context.fetch(Location.fetchRequest()).compactMap(\.name).sorted()
         #expect(names == [String(localized: "Freezer"), String(localized: "Fridge"), String(localized: "Kitchen")].sorted())
         #expect(batch.location?.name == String(localized: "Fridge"))
         #expect(batch.location?.parent?.name == String(localized: "Kitchen"))
+    }
+
+    @Test func joiningMovesEverythingIntoTheSharedStore() throws {
+        let persistence = Persistence(inMemory: true)
+        let context = persistence.container.viewContext
+        let coordinator = persistence.container.persistentStoreCoordinator
+        let source = try #require(coordinator.persistentStores.first)
+        let target = try coordinator.addPersistentStore(type: .inMemory, at: URL(fileURLWithPath: "/dev/null/shared"))
+        var draft = BatchDraft()
+        draft.name = "Milk"
+        let batch = try draft.save(to: nil, in: context)
+        batch.useOne()
+        try context.save()
+
+        try Household.moveAll(from: source, to: target, in: context)
+
+        let items = try context.fetch(Item.fetchRequest())
+        #expect(items.count == 1)
+        #expect(items.first?.objectID.persistentStore == target)
+        #expect((items.first?.usageEvents as? Set<UsageEvent>)?.count == 1)
+        let locations = try context.fetch(Location.fetchRequest())
+        #expect(locations.count == 3)
+        #expect(locations.allSatisfy { $0.objectID.persistentStore == target })
+        #expect(locations.filter { $0.parent == nil }.count == 1)
+    }
+
+    @Test func syncedDuplicateItemsMergeIntoOne() throws {
+        let context = Persistence(inMemory: true).container.viewContext
+        for (name, days) in [("Milk", 3), ("milk", 5)] {
+            var draft = BatchDraft()
+            draft.name = name
+            draft.hasExpiry = true
+            draft.expiresAt = Calendar.current.date(byAdding: .day, value: days, to: .now) ?? .now
+            let batch = try draft.save(to: nil, in: context)
+            // BatchDraft reuses items by name; force the duplicate a sync would bring in.
+            if name == "milk" {
+                let item = Item(context: context)
+                item.id = UUID()
+                item.name = name
+                batch.item = item
+            }
+        }
+        try context.save()
+
+        Persistence.mergeDuplicates(in: context)
+        let items = try context.fetch(Item.fetchRequest())
+        #expect(items.count == 1)
+        #expect((items.first?.batches as? Set<Batch>)?.count == 2)
     }
 }

@@ -368,6 +368,7 @@
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_CFBundleDisplayName = Keepsy;
+				INFOPLIST_KEY_CKSharingSupported = YES;
 				INFOPLIST_KEY_ITSAppUsesNonExemptEncryption = NO;
 				INFOPLIST_KEY_NSCameraUsageDescription = "Keepsy uses the camera to read expiration dates on packages.";
 				INFOPLIST_KEY_UIBackgroundModes = "remote-notification";
@@ -399,6 +400,7 @@
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_CFBundleDisplayName = Keepsy;
+				INFOPLIST_KEY_CKSharingSupported = YES;
 				INFOPLIST_KEY_ITSAppUsesNonExemptEncryption = NO;
 				INFOPLIST_KEY_NSCameraUsageDescription = "Keepsy uses the camera to read expiration dates on packages.";
 				INFOPLIST_KEY_UIBackgroundModes = "remote-notification";

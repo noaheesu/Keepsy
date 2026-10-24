@@ -13,6 +13,7 @@ struct SettingsView: View {
     @State private var notificationsDenied = false
     @State private var confirmingDelete = false
     @State private var deleteFailed = false
+    @State private var sharingFailed = false
 
     var body: some View {
         NavigationStack {
@@ -31,6 +32,23 @@ struct SettingsView: View {
                     }
                 } footer: {
                     Text("One notification a day listing items that expire soon.")
+                }
+
+                // Off in sample data and tests, where there is no iCloud store to share.
+                if Persistence.shared.sharedStore != nil {
+                    Section {
+                        Button("Share with Family", systemImage: "person.2") {
+                            Task {
+                                do {
+                                    try await Household.presentSharing()
+                                } catch {
+                                    sharingFailed = true
+                                }
+                            }
+                        }
+                    } footer: {
+                        Text("Everyone you invite sees and edits the same home. Things already on their iPhone join it.")
+                    }
                 }
 
                 Section {
@@ -80,9 +98,10 @@ struct SettingsView: View {
                     }
                 }
             } message: {
-                Text("They are also removed from iCloud and your other devices. This can't be undone.")
+                Text("They are also removed from iCloud, your other devices and everyone you share with. This can't be undone.")
             }
             .alert("Couldn't delete your data. Try again.", isPresented: $deleteFailed) {}
+            .alert("Couldn't start sharing. Check that you're signed in to iCloud and online.", isPresented: $sharingFailed) {}
             .task(id: [enabled ? 1 : 0, minutes, days]) {
                 await Reminders.reschedule(in: context)
                 notificationsDenied = await UNUserNotificationCenter.current().notificationSettings().authorizationStatus == .denied

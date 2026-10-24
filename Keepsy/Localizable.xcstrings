@@ -310,6 +310,16 @@
         }
       }
     },
+    "Couldn't start sharing. Check that you're signed in to iCloud and online.": {
+      "localizations": {
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "공유를 시작하지 못했어요. iCloud에 로그인되어 있고 인터넷에 연결되어 있는지 확인해 주세요."
+          }
+        }
+      }
+    },
     "D+%lld": {
       "localizations": {
         "en": {
@@ -476,6 +486,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "보통 %lld일마다"
+          }
+        }
+      }
+    },
+    "Everyone you invite sees and edits the same home. Things already on their iPhone join it.": {
+      "localizations": {
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "초대한 가족 모두 같은 집을 보고 고칠 수 있어요. 가족의 iPhone에 있던 기록도 함께 합쳐져요."
           }
         }
       }
@@ -883,6 +903,16 @@
         }
       }
     },
+    "Our home in Keepsy": {
+      "localizations": {
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Keepsy 우리 집"
+          }
+        }
+      }
+    },
     "Past date": {
       "localizations": {
         "ko": {
@@ -1053,6 +1083,16 @@
         }
       }
     },
+    "Share with Family": {
+      "localizations": {
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "가족과 공유"
+          }
+        }
+      }
+    },
     "Shopping": {
       "localizations": {
         "ko": {
@@ -1123,12 +1163,12 @@
         }
       }
     },
-    "They are also removed from iCloud and your other devices. This can't be undone.": {
+    "They are also removed from iCloud, your other devices and everyone you share with. This can't be undone.": {
       "localizations": {
         "ko": {
           "stringUnit": {
             "state": "translated",
-            "value": "iCloud와 다른 기기에서도 지워져요. 되돌릴 수 없어요."
+            "value": "iCloud, 내 다른 기기, 함께 공유하는 가족에게서도 지워져요. 되돌릴 수 없어요."
           }
         }
       }

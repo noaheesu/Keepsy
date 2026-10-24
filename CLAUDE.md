@@ -16,7 +16,8 @@
 
 ## 구조
 - Xcode 26, iOS 18+, Swift 6, iPhone 전용. 폴더 동기화 그룹이라 `Keepsy/`에 파일을 추가하면 자동으로 타깃에 들어간다.
-- 저장: Core Data(`Keepsy.xcdatamodeld`) + `NSPersistentCloudKitContainer`. 공유(가족) 때문에 SwiftData 대신 Core Data를 쓴다. CloudKit 개인 DB 동기화 켜짐(컨테이너 `iCloud.com.noahchoi.keepsy`, 팀 `4CAH5282L3`, `Keepsy.entitlements`). 테스트 호스트에서는 꺼짐(서명 없이 돌아서). 기기마다 만든 기본 장소는 동기화 후 `mergeDuplicateLocations`가 합친다.
+- 저장: Core Data(`Keepsy.xcdatamodeld`) + `NSPersistentCloudKitContainer`. 공유(가족) 때문에 SwiftData 대신 Core Data를 쓴다. CloudKit 개인 DB 동기화 켜짐(컨테이너 `iCloud.com.noahchoi.keepsy`, 팀 `4CAH5282L3`, `Keepsy.entitlements`). 테스트 호스트에서는 꺼짐(서명 없이 돌아서). 기기마다 만든 기본 장소와 같은 이름의 물건은 동기화 후 `mergeDuplicates`가 합친다.
+- 가족 공유(`Household.swift`): 집 전체가 CKShare 하나. 저장소 2개(개인 `Keepsy.sqlite`, 공유받은 `Keepsy-shared.sqlite`). 주인 기기는 저장할 때마다 공유 밖의 새 기록을 공유에 넣고(`shareNewObjects`), 참여자 기기는 새 기록을 공유 저장소에 배정한다(`Persistence`의 willSave). 수락하면 내 기록을 공유 저장소로 복사 후 삭제(`moveAll`). 모두 수정 가능, 설정 › 가족과 공유(UICloudSharingController).
 - 엔티티: `Location`(최대 3단계 트리, `isFreezer`), `Item`(이름·사진·마지막 장소·기한 간격 `shelfLifeDays`·구매 주기 `restockDays`), `Batch`(장소·기한·수량·잔량 4단계·`needsDateCheck`), `ShoppingEntry`, `UsageEvent`(다 씀/버림 기록).
 - 로직은 뷰 밖에 둔다: `BatchDraft`(저장/다시 추가), `Location`(트리, 삭제 시 내용물을 부모로), `Shopping`(추천·집에 넣기), `Reminders`(하루 1회 요약 알림, 14일치 미리 예약), `PackageDate`(포장지 날짜 OCR 파싱, 지역별 일/월 순서), `Expiry`(D-day, 긴급도).
 - 위젯 `KeepsyWidget/`: 동기화 저장소를 직접 열지 않고, 앱이 저장·활성화·동기화 때마다 App Group(`group.com.noahchoi.keepsy`) UserDefaults에 쓰는 `WidgetSnapshot`(이름·기한)만 읽는다. `Keepsy/`의 `Expiry.swift`·`WidgetSnapshot.swift`·`Assets.xcassets`·`Localizable.xcstrings`를 위젯 타깃에 같이 넣었다(pbxproj 예외 목록).
