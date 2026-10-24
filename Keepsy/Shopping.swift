@@ -40,14 +40,21 @@ enum Shopping {
         return batch.expiresAt.map { Expiry.daysLeft(until: $0, from: now) >= 0 } ?? true
     }
 
-    /// Bought items go back into stock; entries for never-stocked names are just cleared, as there is nothing to copy.
+    /// Bought items go back into stock, where and for as long as last time.
     static func putAway(in context: NSManagedObjectContext) throws {
         let done = ShoppingEntry.fetchRequest()
         done.predicate = NSPredicate(format: "isDone == YES")
         for entry in try context.fetch(done) {
-            if let batch = try entry.item?.restock(in: context), batch.expiresAt != nil {
+            if let item = entry.item {
+                let batch = try item.restock(in: context)
                 // The date is a guess from last time until someone looks at the package.
-                batch.needsDateCheck = true
+                if batch.expiresAt != nil { batch.needsDateCheck = true }
+            } else if let name = entry.name {
+                // Never stocked before: nothing to copy, so it goes in without a date and asks for one.
+                var draft = BatchDraft()
+                draft.name = name
+                draft.hasExpiry = false
+                try draft.save(to: nil, in: context).needsDateCheck = true
             }
             context.delete(entry)
         }

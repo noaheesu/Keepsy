@@ -202,7 +202,7 @@ struct ShoppingTests {
         #expect(try Shopping.suggestions(in: context).compactMap(\.item.name) == ["Eggs"])
     }
 
-    @Test func putAwayRestocksBoughtItemsWithLastShelfLife() throws {
+    @Test func putAwayRestocksBoughtItemsWithLastShelfLifeAndNewNamesUndated() throws {
         let milk = try #require(try stock("Milk", daysLeft: 10))
         (milk.batches as? Set<Batch>)?.forEach(context.delete)
         let soap = try #require(try stock("Soap", daysLeft: nil))
@@ -218,7 +218,8 @@ struct ShoppingTests {
         let milkBatch = try #require((milk.batches as? Set<Batch>)?.first)
         #expect(milkBatch.expiresAt.map { Expiry.daysLeft(until: $0) } == 10)
         #expect((soap.batches as? Set<Batch>)?.first?.expiresAt == nil)
-        #expect(try context.count(for: Item.fetchRequest()) == 2)
+        let unknown = try #require(try Item.named("Unknown", in: context)?.batches as? Set<Batch>)
+        #expect(unknown.count == 1 && unknown.first?.expiresAt == nil && unknown.first?.needsDateCheck == true)
     }
 
     @Test func suggestsUsualRebuyOnceItsRhythmHasPassed() throws {
