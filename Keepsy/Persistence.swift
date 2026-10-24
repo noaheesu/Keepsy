@@ -12,14 +12,26 @@ struct Persistence {
     static let preview: Persistence = {
         let persistence = Persistence(inMemory: true)
         let context = persistence.container.viewContext
-        let fridge = try? context.fetch(Location.fetchRequest()).first { $0.name == String(localized: "Fridge") }
-        for (name, days, level) in [("Milk", -1, Level.half), ("Tofu", 0, .full), ("Spinach", 1, .low), ("Eggs", 3, .half), ("Yogurt", 5, .full), ("Kimchi", 30, .full)] {
+        let places = (try? context.fetch(Location.fetchRequest())) ?? []
+        let fridge = places.first { $0.name == String(localized: "Fridge") }
+        let freezer = places.first { $0.name == String(localized: "Freezer") }
+        let bathroom = Location.make(String(localized: "Bathroom"), parent: nil, in: context)
+        let samples: [(String.LocalizationValue, Location?, Int, Level)] = [
+            ("Milk", fridge, -1, .half), ("Tofu", fridge, 0, .full), ("Spinach", fridge, 1, .low), ("Eggs", fridge, 3, .half),
+            ("Yogurt", fridge, 5, .full), ("Kimchi", fridge, 30, .full), ("Dumplings", freezer, 60, .full),
+            ("Sunscreen", bathroom, 120, .half), ("Toothpaste", bathroom, 200, .empty),
+        ]
+        for (name, location, days, level) in samples {
             let item = Item(context: context)
             item.id = UUID()
-            item.name = name
+            item.name = String(localized: name)
             item.createdAt = .now
+            if item.name == String(localized: "Eggs") {
+                item.restockDays = 7
+                item.lastBoughtAt = Calendar.current.date(byAdding: .day, value: -8, to: .now)
+            }
             let batch = Batch(context: context)
-            batch.location = fridge
+            batch.location = location
             batch.id = UUID()
             batch.addedAt = Calendar.current.date(byAdding: .day, value: -7, to: .now)
             batch.expiresAt = Calendar.current.date(byAdding: .day, value: days, to: .now)
@@ -28,6 +40,7 @@ struct Persistence {
             batch.item = item
         }
         try? context.save()
+        try? Shopping.add(String(localized: "Bananas"), in: context)
         return persistence
     }()
 

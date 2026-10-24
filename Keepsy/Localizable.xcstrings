@@ -200,6 +200,26 @@
         }
       }
     },
+    "Bananas": {
+      "localizations": {
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "바나나"
+          }
+        }
+      }
+    },
+    "Bathroom": {
+      "localizations": {
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "욕실"
+          }
+        }
+      }
+    },
     "Bought Again": {
       "localizations": {
         "ko": {
@@ -442,12 +462,32 @@
         }
       }
     },
+    "Dumplings": {
+      "localizations": {
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "만두"
+          }
+        }
+      }
+    },
     "Edit Item": {
       "localizations": {
         "ko": {
           "stringUnit": {
             "state": "translated",
             "value": "물건 수정"
+          }
+        }
+      }
+    },
+    "Eggs": {
+      "localizations": {
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "달걀"
           }
         }
       }
@@ -679,6 +719,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "Keepsy가 저장된 물건을 열 수 없어요"
+          }
+        }
+      }
+    },
+    "Kimchi": {
+      "localizations": {
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "김치"
           }
         }
       }
@@ -1133,6 +1183,16 @@
         }
       }
     },
+    "Sunscreen": {
+      "localizations": {
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "선크림"
+          }
+        }
+      }
+    },
     "Swipe items as used up or long-press them as thrown away to see how much gets wasted.": {
       "localizations": {
         "ko": {
@@ -1243,6 +1303,26 @@
         }
       }
     },
+    "Tofu": {
+      "localizations": {
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "두부"
+          }
+        }
+      }
+    },
+    "Toothpaste": {
+      "localizations": {
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "치약"
+          }
+        }
+      }
+    },
     "Touch and hold an item to change how much is left, move it to the freezer, or mark it as thrown away.": {
       "localizations": {
         "ko": {
@@ -1339,6 +1419,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "%lld일 이내"
+          }
+        }
+      }
+    },
+    "Yogurt": {
+      "localizations": {
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "요거트"
           }
         }
       }
