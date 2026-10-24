@@ -32,6 +32,7 @@ xcrun devicectl device install app --device <identifier> build/Build/Products/De
 - `design/AppIcon.svg`: app icon source
 - `docs/`: privacy policy, published with GitHub Pages
 - `store/AppStore.md`: App Store listing drafts
+- `store/screenshots/`: App Store screenshots, rendered by `design/screenshots.sh` from simulator captures in `design/screens/`
 
 ## 진행 상황 (2026-10-23)
 
@@ -47,13 +48,14 @@ xcrun devicectl device install app --device <identifier> build/Build/Products/De
 - iCloud 동기화(개인 DB), 기기별 기본 장소 중복 자동 정리.
 - "곧 만료" 위젯(작게/중간).
 - 가족 공유(집 전체, 모두 수정 가능, 수락하면 내 기록이 합쳐짐).
+- 스토어 스크린샷 6.9" 한국어·영어 3장씩(`design/screenshots.sh`로 다시 만듦).
 - 테스트 30개 통과.
 - 유료 개발자 계정(팀 `4CAH5282L3`, 문의 dev.noahchoi@gmail.com). Debug 빌드를 개인 iPhone 16 Pro에 설치함(2026-10-23).
 
 **남은 일**
 - CloudKit 스키마 Production 배포.
 - 두 Apple ID로 가족 초대·수락·나가기 실기기 확인.
-- 출시: 스크린샷, App Store Connect 등록, EU 비판매자 신고. 중국 제외 전 세계.
+- 출시: App Store Connect 등록, EU 비판매자 신고. 중국 제외 전 세계.
 - 설치한 iPhone에서 확인: 날짜 스캔, 길게 누르기 메뉴, 장보기·장소·설정 화면 터치, 위젯 추가, iCloud 동기화.
 
 자세한 기획과 작업 규칙은 `CLAUDE.md`에 있다.

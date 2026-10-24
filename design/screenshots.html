@@ -1,0 +1,37 @@
+<!doctype html>
+<!-- App Store screenshot frame. Open as screenshots.html#ko-0 … #en-2; render with design/screenshots.sh. -->
+<html>
+<head>
+<meta charset="utf-8">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@500;900&display=swap" rel="stylesheet">
+<style>
+body { margin: 0; }
+.frame { width: 440px; height: 956px; box-sizing: border-box; overflow: hidden; background: #2E6B4A; font-family: 'Noto Sans KR', sans-serif; color: #fff; display: flex; flex-direction: column; padding-top: 72px; gap: 44px; }
+.copy { display: flex; flex-direction: column; gap: 14px; padding: 0 36px; }
+h1 { margin: 0; font-size: 42px; line-height: 1.18; font-weight: 900; letter-spacing: -1px; white-space: pre-line; }
+p { margin: 0; font-size: 17px; font-weight: 500; color: #D6EBDD; }
+.phone { width: 360px; align-self: center; border-radius: 56px; border: 8px solid #0F1F16; overflow: hidden; background: #0F1F16; box-shadow: 0 28px 56px rgba(0,0,0,0.3); }
+.phone img { display: block; width: 100%; border-radius: 48px; }
+</style>
+</head>
+<body>
+<div class="frame">
+  <div class="copy"><h1 id="title"></h1><p id="sub"></p></div>
+  <div class="phone"><img id="shot" alt=""></div>
+</div>
+<script>
+const copy = {
+  ko: [["곧 상할 것부터\n한눈에", "기한이 가까운 순서로 알아서 정리돼요"],
+       ["냉장고, 욕실\n어디에 뭐가 있는지", "우리 집 구조대로 장소를 나눠요"],
+       ["다 쓴 건 알아서\n장보기 목록에", "자주 사는 주기도 기억해요"]],
+  en: [["See what expires\nfirst", "Everything sorted by how soon it goes off"],
+       ["Know what's\nwhere", "Fridge, freezer, bathroom: your own places"],
+       ["Used it up?\nIt's on the list", "Keepsy remembers how often you buy things"]],
+};
+const [lang, index] = location.hash.slice(1).split("-");
+document.documentElement.lang = lang;
+[title.textContent, sub.textContent] = copy[lang][index];
+shot.src = `screens/${lang}-${index}.png`;
+</script>
+</body>
+</html>
