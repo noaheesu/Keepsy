@@ -6,7 +6,8 @@ An iPhone app for keeping track of what's at home and when it runs out: fridge, 
 - Scan the date on a package with the camera.
 - Swipe when you use something up or buy it again; Keepsy remembers where it goes and how long it lasts.
 - A shopping list that suggests what ran out and what you usually buy around now.
-- One reminder a day with what expires soon.
+- One reminder a day with what expires soon, and an "Expiring soon" widget.
+- Syncs through iCloud and can be shared with family.
 
 Built with SwiftUI and Core Data, iOS 18+. Korean and English.
 
@@ -18,6 +19,14 @@ Run tests:
 
 ```sh
 xcodebuild test -project Keepsy.xcodeproj -scheme Keepsy -destination 'platform=iOS Simulator,name=iPhone 16'
+```
+
+Install on a connected iPhone (signing team `4CAH5282L3`):
+
+```sh
+xcodebuild build -project Keepsy.xcodeproj -scheme Keepsy -destination 'generic/platform=iOS' -allowProvisioningUpdates -derivedDataPath build
+xcrun devicectl list devices
+xcrun devicectl device install app --device <identifier> build/Build/Products/Debug-iphoneos/Keepsy.app
 ```
 
 - `design/AppIcon.svg`: app icon source
@@ -39,11 +48,12 @@ xcodebuild test -project Keepsy.xcodeproj -scheme Keepsy -destination 'platform=
 - "곧 만료" 위젯(작게/중간).
 - 가족 공유(집 전체, 모두 수정 가능, 수락하면 내 기록이 합쳐짐).
 - 테스트 30개 통과.
+- 유료 개발자 계정(팀 `4CAH5282L3`, 문의 dev.noahchoi@gmail.com). Debug 빌드를 개인 iPhone 16 Pro에 설치함(2026-10-23).
 
 **남은 일**
 - CloudKit 스키마 Production 배포.
 - 두 Apple ID로 가족 초대·수락·나가기 실기기 확인.
 - 출시: 스크린샷, App Store Connect 등록, EU 비판매자 신고. 중국 제외 전 세계.
-- 실제 기기에서 날짜 스캔, 장보기·장소·설정 화면 터치 확인.
+- 설치한 iPhone에서 확인: 날짜 스캔, 길게 누르기 메뉴, 장보기·장소·설정 화면 터치, 위젯 추가, iCloud 동기화.
 
 자세한 기획과 작업 규칙은 `CLAUDE.md`에 있다.

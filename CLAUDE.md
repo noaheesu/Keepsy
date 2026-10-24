@@ -11,6 +11,7 @@
   xcodebuild test -project Keepsy.xcodeproj -scheme Keepsy -destination 'platform=iOS Simulator,OS=18.2,name=iPhone 16' CODE_SIGNING_ALLOWED=NO
   ```
 - 화면 확인: 시뮬레이터에 설치 후 `xcrun simctl launch "iPhone 16" com.noahchoi.keepsy -sampleData -onboarded YES -AppleLanguages "(ko)" -AppleLocale ko_KR` 실행 → `xcrun simctl io "iPhone 16" screenshot`.
+- 실기기 설치: README "Develop"의 `xcodebuild … -allowProvisioningUpdates` + `xcrun devicectl device install app` (사용자 iPhone 16 Pro "Noah").
 - 새 문자열은 `Keepsy/Localizable.xcstrings`에 ko 번역을 직접 추가한다(영어가 원문). 복수형이 필요한 영어 문구는 plural variation을 쓴다.
 - 질문할 때는 추천안을 함께 제시한다. 사용자는 "추천"으로 답하는 경우가 많다.
 
